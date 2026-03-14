@@ -123,6 +123,27 @@ def test_enrichment_output_schema(tmp_path):
     assert all(isinstance(r, EnrichedArticle) for r in results)
 
 
+def test_enrichment_strips_json_code_fence():
+    """Model response wrapped in ```json ... ``` fences must parse correctly, not fall back."""
+    fenced = f"```json\n{VALID_HAIKU_RESPONSE}\n```"
+    article = _make_article()
+    client = _mock_client(fenced)
+    result = _enrich_one(client, article)
+    assert result.scheme_type == "earnings_manipulation"
+    assert result.korean_applicability == "HIGH"
+    assert result.signals == ["DSRI", "TATA"]
+
+
+def test_enrichment_strips_plain_code_fence():
+    """Model response wrapped in plain ``` ... ``` fences (no language tag) must also parse."""
+    fenced = f"```\n{VALID_HAIKU_RESPONSE}\n```"
+    article = _make_article()
+    client = _mock_client(fenced)
+    result = _enrich_one(client, article)
+    assert result.scheme_type == "earnings_manipulation"
+    assert result.korean_applicability == "HIGH"
+
+
 def test_enrichment_limit_parameter(tmp_path):
     """limit=1 processes only 1 article."""
     import json as _json
