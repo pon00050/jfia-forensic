@@ -2,7 +2,7 @@
 
 import json
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -25,48 +25,53 @@ def _make_article(index: int = 1, abstract: str = "Sample abstract text") -> JFI
     )
 
 
-VALID_HAIKU_RESPONSE = json.dumps({
+VALID_TOOL_INPUT = {
     "scheme_type": "earnings_manipulation",
     "signals": ["DSRI", "TATA"],
     "data_fields": ["receivables", "revenue"],
     "korean_applicability": "HIGH",
     "fss_violation_category": "revenue_fabrication",
-})
+}
 
 
-def _mock_client(response_text: str) -> MagicMock:
+def _mock_tool_client(tool_input: dict) -> MagicMock:
     client = MagicMock()
-    msg = MagicMock()
-    msg.content = [MagicMock(text=response_text)]
-    client.messages.create.return_value = msg
+    tool_block = MagicMock()
+    tool_block.input = tool_input
+    client.messages.create.return_value = MagicMock(content=[tool_block])
     return client
 
 
 # --- Tests ---
 
 def test_enrichment_calls_haiku_model():
-    """_enrich_one must use HAIKU_MODEL, not sonnet/opus."""
+    """_enrich_one must use HAIKU_MODEL, pass tools and tool_choice."""
     article = _make_article()
-    client = _mock_client(VALID_HAIKU_RESPONSE)
+    client = _mock_tool_client(VALID_TOOL_INPUT)
     _enrich_one(client, article)
     call_kwargs = client.messages.create.call_args
     assert call_kwargs.kwargs["model"] == HAIKU_MODEL
+    assert "tools" in call_kwargs.kwargs
+    assert call_kwargs.kwargs["tool_choice"] == {
+        "type": "tool",
+        "name": "extract_article_metadata",
+    }
 
 
 def test_enrichment_skips_empty_abstract():
     """Article with empty abstract returns UNKNOWN applicability without calling API."""
     article = _make_article(abstract="")
-    client = _mock_client(VALID_HAIKU_RESPONSE)
+    client = _mock_tool_client(VALID_TOOL_INPUT)
     result = _enrich_one(client, article)
     client.messages.create.assert_not_called()
     assert result.korean_applicability == "UNKNOWN"
     assert result.scheme_type is None
 
 
-def test_enrichment_parses_valid_json_response():
-    """Valid Haiku JSON response produces EnrichedArticle with all fields."""
+def test_enrichment_parses_valid_tool_response():
+    """Valid tool response produces EnrichedArticle with all fields."""
     article = _make_article()
-    client = _mock_client(VALID_HAIKU_RESPONSE)
+    client = _mock_tool_client(VALID_TOOL_INPUT)
     result = _enrich_one(client, article)
     assert result.scheme_type == "earnings_manipulation"
     assert "DSRI" in result.signals
@@ -75,9 +80,12 @@ def test_enrichment_parses_valid_json_response():
 
 
 def test_enrichment_handles_malformed_response():
-    """JSON parse failure returns fallback EnrichedArticle with UNKNOWN."""
+    """AttributeError from unexpected response structure returns fallback EnrichedArticle."""
     article = _make_article()
-    client = _mock_client("not valid json {{{")
+    client = MagicMock()
+    # content[0].input raises AttributeError
+    bad_block = MagicMock(spec=[])  # no .input attribute
+    client.messages.create.return_value = MagicMock(content=[bad_block])
     result = _enrich_one(client, article)
     assert result.korean_applicability == "UNKNOWN"
     assert result.scheme_type is None
@@ -85,9 +93,7 @@ def test_enrichment_handles_malformed_response():
 
 
 def test_enrichment_handles_api_exception():
-    """API/auth exceptions propagate — they are NOT silently swallowed.
-    Only JSON parse failures return the fallback EnrichedArticle.
-    """
+    """API/auth exceptions propagate — they are NOT silently swallowed."""
     article = _make_article()
     client = MagicMock()
     client.messages.create.side_effect = Exception("API error")
@@ -97,7 +103,6 @@ def test_enrichment_handles_api_exception():
 
 def test_enrichment_output_schema(tmp_path):
     """enrich_catalog output length == input length; all EnrichedArticle instances."""
-    import json as _json
     catalog_data = {
         "scraped_at": "2025-01-01",
         "total_articles": 2,
@@ -113,40 +118,18 @@ def test_enrichment_output_schema(tmp_path):
         ],
     }
     p = tmp_path / "catalog.json"
-    p.write_text(_json.dumps(catalog_data), encoding="utf-8")
+    p.write_text(json.dumps(catalog_data), encoding="utf-8")
     catalog = JFIACatalog.load(p)
 
-    client = _mock_client(VALID_HAIKU_RESPONSE)
+    client = _mock_tool_client(VALID_TOOL_INPUT)
     results = enrich_catalog(catalog, client)
 
     assert len(results) == 2
     assert all(isinstance(r, EnrichedArticle) for r in results)
 
 
-def test_enrichment_strips_json_code_fence():
-    """Model response wrapped in ```json ... ``` fences must parse correctly, not fall back."""
-    fenced = f"```json\n{VALID_HAIKU_RESPONSE}\n```"
-    article = _make_article()
-    client = _mock_client(fenced)
-    result = _enrich_one(client, article)
-    assert result.scheme_type == "earnings_manipulation"
-    assert result.korean_applicability == "HIGH"
-    assert result.signals == ["DSRI", "TATA"]
-
-
-def test_enrichment_strips_plain_code_fence():
-    """Model response wrapped in plain ``` ... ``` fences (no language tag) must also parse."""
-    fenced = f"```\n{VALID_HAIKU_RESPONSE}\n```"
-    article = _make_article()
-    client = _mock_client(fenced)
-    result = _enrich_one(client, article)
-    assert result.scheme_type == "earnings_manipulation"
-    assert result.korean_applicability == "HIGH"
-
-
 def test_enrichment_limit_parameter(tmp_path):
     """limit=1 processes only 1 article."""
-    import json as _json
     catalog_data = {
         "scraped_at": "2025-01-01",
         "total_articles": 3,
@@ -162,9 +145,104 @@ def test_enrichment_limit_parameter(tmp_path):
         ],
     }
     p = tmp_path / "catalog.json"
-    p.write_text(_json.dumps(catalog_data), encoding="utf-8")
+    p.write_text(json.dumps(catalog_data), encoding="utf-8")
     catalog = JFIACatalog.load(p)
 
-    client = _mock_client(VALID_HAIKU_RESPONSE)
+    client = _mock_tool_client(VALID_TOOL_INPUT)
     results = enrich_catalog(catalog, client, limit=1)
     assert len(results) == 1
+
+
+def test_enriched_article_invalid_scheme_type_coerces_to_none():
+    """scheme_type not in SCHEME_TYPES is coerced to None."""
+    article = _make_article()
+    enriched = EnrichedArticle(
+        article=article,
+        scheme_type="Ponzi scheme",
+        signals=[],
+        data_fields=[],
+        korean_applicability="UNKNOWN",
+        fss_violation_category=None,
+    )
+    assert enriched.scheme_type is None
+
+
+def test_enriched_article_valid_scheme_type_accepted():
+    """Valid scheme_type passes through unchanged."""
+    article = _make_article()
+    enriched = EnrichedArticle(
+        article=article,
+        scheme_type="earnings_manipulation",
+        signals=[],
+        data_fields=[],
+        korean_applicability="UNKNOWN",
+        fss_violation_category=None,
+    )
+    assert enriched.scheme_type == "earnings_manipulation"
+
+
+def test_enriched_article_invalid_fss_category_coerces_to_none():
+    """fss_violation_category not in FSS_VIOLATION_CATEGORIES is coerced to None."""
+    article = _make_article()
+    enriched = EnrichedArticle(
+        article=article,
+        scheme_type=None,
+        signals=[],
+        data_fields=[],
+        korean_applicability="UNKNOWN",
+        fss_violation_category="channel_stuffing",
+    )
+    assert enriched.fss_violation_category is None
+
+
+def test_by_scheme_end_to_end(tmp_path):
+    """by_scheme returns articles matching the requested scheme_type."""
+    catalog_data = {
+        "scraped_at": "2025-01-01",
+        "total_articles": 1,
+        "issues": [
+            {
+                "volume": 1, "issue": 1, "period": "2009", "contentid": "x",
+                "url": "https://example.com", "is_special_issue": False,
+                "articles": [
+                    {
+                        "index": 1,
+                        "title": "Beneish Detection Study",
+                        "authors": ["Smith A"],
+                        "abstract": "Earnings management via M-Score.",
+                        "keywords": [],
+                        "pdf_url": "https://example.com/1.pdf",
+                    }
+                ],
+            }
+        ],
+    }
+    enriched_data = [
+        {
+            "article": {
+                "index": 1,
+                "title": "Beneish Detection Study",
+                "authors": ["Smith A"],
+                "abstract": "Earnings management via M-Score.",
+                "keywords": [],
+                "pdf_url": "https://example.com/1.pdf",
+                "volume": 1,
+                "issue": 1,
+                "period": "2009",
+            },
+            "scheme_type": "earnings_manipulation",
+            "signals": ["DSRI"],
+            "data_fields": [],
+            "korean_applicability": "HIGH",
+            "fss_violation_category": "revenue_fabrication",
+        }
+    ]
+    catalog_path = tmp_path / "catalog.json"
+    enriched_path = tmp_path / "enriched.json"
+    catalog_path.write_text(json.dumps(catalog_data), encoding="utf-8")
+    enriched_path.write_text(json.dumps(enriched_data), encoding="utf-8")
+
+    catalog = JFIACatalog.load(catalog_path, enriched_path=enriched_path)
+    results = catalog.by_scheme("earnings_manipulation")
+    assert len(results) == 1
+    assert results[0].title == "Beneish Detection Study"

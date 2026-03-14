@@ -128,16 +128,16 @@ def two_article_catalog(tmp_path: Path) -> Path:
 
 @pytest.fixture
 def mock_anthropic_client() -> MagicMock:
-    """Monkeypatched Anthropic client returning valid JSON."""
-    valid_response = json.dumps({
+    """Monkeypatched Anthropic client returning a valid tool-use block."""
+    tool_input = {
         "scheme_type": "earnings_manipulation",
         "signals": ["DSRI"],
         "data_fields": ["receivables"],
         "korean_applicability": "HIGH",
         "fss_violation_category": "revenue_fabrication",
-    })
+    }
     client = MagicMock()
-    msg = MagicMock()
-    msg.content = [MagicMock(text=valid_response)]
-    client.messages.create.return_value = msg
+    tool_block = MagicMock()
+    tool_block.input = tool_input
+    client.messages.create.return_value = MagicMock(content=[tool_block])
     return client
