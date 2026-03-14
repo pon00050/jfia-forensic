@@ -13,8 +13,42 @@ import sys
 from pathlib import Path
 
 from .catalog import JFIACatalog
-from .constants import HAIKU_MODEL, ENRICHMENT_SYSTEM_PROMPT
+from .constants import (
+    HAIKU_MODEL,
+    ENRICHMENT_SYSTEM_PROMPT,
+    SCHEME_TYPES,
+    FSS_VIOLATION_CATEGORIES,
+)
 from .models import EnrichedArticle, JFIAArticle
+
+
+ENRICHMENT_TOOL = {
+    "name": "extract_article_metadata",
+    "description": "Extract forensic accounting classification from a journal article.",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "scheme_type": {
+                "type": ["string", "null"],
+                "enum": SCHEME_TYPES + [None],
+            },
+            "signals": {"type": "array", "items": {"type": "string"}},
+            "data_fields": {"type": "array", "items": {"type": "string"}},
+            "korean_applicability": {
+                "type": "string",
+                "enum": ["HIGH", "MEDIUM", "LOW", "UNKNOWN"],
+            },
+            "fss_violation_category": {
+                "type": ["string", "null"],
+                "enum": FSS_VIOLATION_CATEGORIES + [None],
+            },
+        },
+        "required": [
+            "scheme_type", "signals", "data_fields",
+            "korean_applicability", "fss_violation_category",
+        ],
+    },
+}
 
 
 def _build_fallback(article: JFIAArticle) -> EnrichedArticle:
@@ -35,23 +69,17 @@ def _enrich_one(client, article: JFIAArticle) -> EnrichedArticle:
 
     prompt = f"Title: {article.title}\n\nAbstract: {article.abstract}"
 
-    # Auth and connection errors must propagate — do not swallow them.
-    # Only catch parse/validation failures from malformed model responses.
+    # Auth/connection errors propagate — not caught.
     response = client.messages.create(
         model=HAIKU_MODEL,
         max_tokens=512,
         system=ENRICHMENT_SYSTEM_PROMPT,
+        tools=[ENRICHMENT_TOOL],
+        tool_choice={"type": "tool", "name": "extract_article_metadata"},
         messages=[{"role": "user", "content": prompt}],
     )
-    text = response.content[0].text.strip()
-    # Strip markdown code fences if the model wraps its JSON response
-    if text.startswith("```"):
-        text = text.split("```", 2)[1]
-        if text.startswith("json"):
-            text = text[4:]
-        text = text.strip()
     try:
-        parsed = json.loads(text)
+        parsed = response.content[0].input  # dict; no JSON parsing needed
         return EnrichedArticle(
             article=article,
             scheme_type=parsed.get("scheme_type"),
@@ -60,7 +88,7 @@ def _enrich_one(client, article: JFIAArticle) -> EnrichedArticle:
             korean_applicability=parsed.get("korean_applicability") or "UNKNOWN",
             fss_violation_category=parsed.get("fss_violation_category"),
         )
-    except (json.JSONDecodeError, KeyError, ValueError):
+    except (AttributeError, KeyError, ValueError):
         return _build_fallback(article)
 
 
