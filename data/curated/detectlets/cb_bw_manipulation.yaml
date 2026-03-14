@@ -1,0 +1,42 @@
+name: "CB/BW Manipulation"
+version: "1.0.0"
+scheme: "cb_bw_manipulation"
+fss_violation_categories:
+  - "disclosure_fraud"
+  - "related_party"
+jfia_citations: []
+signals:
+  - name: "repricing_below_market"
+    description: "CB refixed below prevailing market price — Flag 1; requires SEIBRO API"
+    direction: "nonzero"
+  - name: "exercise_at_peak"
+    description: "BW exercise clustered at local price peaks — Flag 2; requires SEIBRO API"
+    direction: "nonzero"
+  - name: "price_impact"
+    description: "Abnormal price/volume movement within ±60 trading days of CB/BW event"
+    direction: "nonzero"
+  - name: "structural_flag"
+    description: "Structural anomaly: multiple CBs in rapid succession, warrant separability, low refixing floor"
+    direction: "nonzero"
+required_fields:
+  - issue_amount
+  - refixing_floor
+  - maturity_date
+  - board_date
+  - warrant_separable
+  - price_volume_window
+threshold: null
+korean_threshold: null
+output_fields:
+  - flag_count
+  - flag_1_repricing
+  - flag_2_exercise
+  - flag_3_price_impact
+  - flag_4_structural
+  - risk_tier
+interpretation: >
+  801 of 3,671 CB/BW events flagged (flag_count >= 1) as of 2026-03-08.
+  Flags 1 and 2 require SEIBRO lifecycle data (getXrcStkOptionXrcInfoN1,
+  getXrcStkStatInfoN1) — DART cannot replace SEIBRO for these signals.
+  사토시홀딩스 is the most anomalous: two CBs 4 days apart, both dual-flagged.
+  Commercial use requires KSD 별도이용허락 (call 051-519-1420).

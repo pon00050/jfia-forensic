@@ -1,0 +1,35 @@
+name: "Disclosure Timing Anomaly"
+version: "1.0.0"
+scheme: "timing_anomaly"
+fss_violation_categories:
+  - "disclosure_fraud"
+jfia_citations: []
+signals:
+  - name: "same_day_price_spike"
+    description: "Same-day abnormal price movement relative to disclosure timestamp"
+    direction: "above"
+  - name: "same_day_volume_spike"
+    description: "Same-day abnormal trading volume relative to disclosure timestamp"
+    direction: "above"
+  - name: "pre_disclosure_leakage"
+    description: "Abnormal price/volume in ±60 trading-day window preceding disclosure"
+    direction: "nonzero"
+required_fields:
+  - disclosure_date
+  - disclosure_time
+  - open_price
+  - close_price
+  - volume
+  - 60_day_avg_volume
+threshold: null
+korean_threshold: null
+output_fields:
+  - flagged
+  - price_change_pct
+  - volume_ratio
+  - disclosure_lag_days
+interpretation: >
+  4,046 of 42,315 disclosure events flagged (2026-03-08 rerun with ±60 trading-day windows).
+  Requires disclosures.parquet (271,504 rows, 921 corps) joined with price_volume.parquet.
+  trading_day_offset() from src/trading_calendar.py uses KRX XKRX calendar.
+  Prior count before KI-043 fix was 3,373 — diff due to correct trading-day window.

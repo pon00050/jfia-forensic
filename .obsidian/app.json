@@ -1,0 +1,11 @@
+{
+  "userIgnoreFilters": [
+    "src",
+    "tests",
+    "data",
+    ".venv",
+    ".git",
+    ".github",
+    "reports"
+  ]
+}

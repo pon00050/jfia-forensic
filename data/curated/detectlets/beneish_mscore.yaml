@@ -1,0 +1,76 @@
+name: "Beneish M-Score"
+version: "1.0.0"
+scheme: "earnings_manipulation"
+fss_violation_categories:
+  - "revenue_fabrication"
+  - "cost_distortion"
+jfia_citations:
+  - volume: 1
+    issue: 1
+    index: 4
+    title: "Pre and Post-SOX Association between Audit Firm Tenure and Earnings Management Risk"
+    authors: ["Santanu Mitra", "Donald R. Deis", "Mahmud Hossain"]
+    pdf_url: "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-1_4.pdf"
+signals:
+  - name: "DSRI"
+    description: "Days Sales Receivable Index — receivables growing faster than revenue"
+    threshold: 1.465
+    direction: "above"
+  - name: "GMI"
+    description: "Gross Margin Index — gross margins deteriorating"
+    threshold: 1.0
+    direction: "above"
+  - name: "AQI"
+    description: "Asset Quality Index — off-balance-sheet and intangible asset growth"
+    threshold: 1.254
+    direction: "above"
+  - name: "SGI"
+    description: "Sales Growth Index — high growth correlated with manipulation incentive"
+    threshold: 1.607
+    direction: "above"
+  - name: "DEPI"
+    description: "Depreciation Index — slowing depreciation suggests asset overstatement"
+    threshold: 1.0
+    direction: "above"
+  - name: "SGAI"
+    description: "SGA Expense Index — disproportionate SGA growth"
+    threshold: 1.041
+    direction: "above"
+  - name: "LVGI"
+    description: "Leverage Index — increasing leverage signals financing pressure"
+    threshold: 1.0
+    direction: "above"
+  - name: "TATA"
+    description: "Total Accruals to Total Assets — accrual-based manipulation (KOSDAQ: negative)"
+    threshold: 0.031
+    direction: "above"
+required_fields:
+  - receivables
+  - revenue
+  - cogs
+  - sga
+  - ppe
+  - depreciation
+  - total_assets
+  - lt_debt
+  - net_income
+  - cfo
+threshold: -1.78
+korean_threshold: -2.45
+output_fields:
+  - m_score
+  - flag
+  - risk_tier
+  - dsri
+  - gmi
+  - aqi
+  - sgi
+  - depi
+  - sgai
+  - lvgi
+  - tata
+interpretation: >
+  M-Score above -1.78 (US threshold) or -2.45 (Korean bootstrap CI: [-3.50, -1.60])
+  indicates possible earnings manipulation. Flags ~1,250 of 7,447 KOSDAQ company-years
+  (2018-2023). TATA is negative for KOSDAQ (bootstrap-confirmed KOSDAQ-specific pattern).
+  Labels sourced from 30 FSS sanctions (17 fraud=1, 13 fraud=0) + 20 auto-controls.

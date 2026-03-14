@@ -1,0 +1,38 @@
+name: "Officer Network Concentration"
+version: "1.0.0"
+scheme: "insider_network"
+fss_violation_categories:
+  - "related_party"
+  - "disclosure_fraud"
+jfia_citations: []
+signals:
+  - name: "cross_company_presence"
+    description: "Individual officer/director appears in ≥2 flagged companies (FLAG_THRESHOLD=2)"
+    threshold: 2.0
+    direction: "above"
+  - name: "degree_centrality"
+    description: "NetworkX degree centrality in the officer-company bipartite graph"
+    direction: "above"
+  - name: "betweenness_centrality"
+    description: "NetworkX betweenness centrality — bridges between flagged company clusters"
+    direction: "above"
+required_fields:
+  - corp_code
+  - officer_name
+  - role
+  - flag_count
+threshold: null
+korean_threshold: null
+output_fields:
+  - individual_id
+  - companies_count
+  - flagged_companies_count
+  - degree_centrality
+  - betweenness_centrality
+  - eigenvector_centrality
+interpretation: >
+  3,043 individuals in officer_network/centrality_report.csv.
+  114 individuals appear in ≥2 flagged companies (FLAG_THRESHOLD=2, raised session 33).
+  8 high-priority secondaries: PC3 >= 95th percentile AND flag_count >= 2.
+  Graph built with NetworkX from officer_holdings.parquet (6,957 rows).
+  Fixed in session 13 (KI-007): now stable with consistent 3,043 individual count.
