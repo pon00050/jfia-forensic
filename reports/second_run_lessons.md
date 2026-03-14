@@ -149,11 +149,54 @@ misclassified, add a third few-shot example covering this scheme.
 
 ---
 
+## Operational Incidents
+
+### 1. Background task launched; output unreadable due to Windows path quoting
+
+The enrichment was started as a background shell task. Immediately after launch, an attempt
+was made to read the live output file using `tail`/`cat` via bash. Both commands failed
+silently because the bash shell on Windows did not handle the long Windows path correctly
+(backslash-separated segments were interpreted as a single malformed argument). The task
+was running and writing output the entire time; the monitoring step was the failure, not
+the pipeline.
+
+**Lesson:** On Windows, background task output files should be read via the `TaskOutput`
+tool, not via bash file commands. The path format the system provides is a Windows path;
+bash does not quote it correctly when passed to native commands.
+
+### 2. Redundant synchronous run launched; hit billing wall
+
+Because the background task's output appeared unreadable, a second synchronous run was
+launched to verify the pipeline was working. That run immediately failed with:
+
+```
+anthropic.BadRequestError: 400 — credit balance is too low
+```
+
+At this point it was unclear whether the background task was still running, had already
+succeeded, or had also failed. The background task completed successfully shortly after
+and posted its completion notification — confirming that it had consumed the remaining
+credit during its run, leaving none for the synchronous re-run.
+
+**The successful run was the original background task (b30ckg4fa), not a new run.**
+The enriched JSON was written by that task; the analysis and this post-mortem are based
+on its output.
+
+**Lesson:** Do not launch a second run while a background task is still in progress.
+Wait for the `TaskOutput` notification before concluding a run has failed.
+
+### 3. Auth-propagation fix confirmed correct
+
+The billing wall error was raised immediately and propagated cleanly — it was not swallowed
+by the fallback handler. Had the run 1 bug (broad `except` around the API call) still been
+present, the synchronous run would have silently written 469 UNKNOWN fallback records and
+exited 0. Instead it raised `BadRequestError` and exited 1. The fix works as intended.
+
+---
+
 ## Pipeline Health
 
 - No crashes, no fallback triggered by API errors.
-- Auth-propagation fix from run 1 confirmed working (billing error raised immediately
-  during a failed pre-run attempt; did not silently produce 469 fallback records).
 - Coercing validators confirmed working: zero invalid strings in scheme_type or
   fss_violation_category despite the model having theoretically been able to produce them
   via content[0].input before Pydantic validation.
