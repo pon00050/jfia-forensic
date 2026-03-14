@@ -26,7 +26,7 @@ FSS_VIOLATION_CATEGORIES = [
 KOREAN_APPLICABILITY_VALUES = ["HIGH", "MEDIUM", "LOW", "UNKNOWN"]
 
 # Model routing — never use opus in this project
-HAIKU_MODEL = "claude-haiku-4-5-20251001"
+HAIKU_MODEL = "claude-haiku-4-5"
 
 ENRICHMENT_SYSTEM_PROMPT = """You are a forensic accounting classifier. Given a journal article abstract, \
 extract structured information. Respond ONLY with valid JSON matching this schema:

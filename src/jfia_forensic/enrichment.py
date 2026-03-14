@@ -44,6 +44,12 @@ def _enrich_one(client, article: JFIAArticle) -> EnrichedArticle:
         messages=[{"role": "user", "content": prompt}],
     )
     text = response.content[0].text.strip()
+    # Strip markdown code fences if the model wraps its JSON response
+    if text.startswith("```"):
+        text = text.split("```", 2)[1]
+        if text.startswith("json"):
+            text = text[4:]
+        text = text.strip()
     try:
         parsed = json.loads(text)
         return EnrichedArticle(
@@ -84,6 +90,8 @@ def enrich_catalog(
 def main() -> None:
     import argparse
     import anthropic
+    from dotenv import load_dotenv
+    load_dotenv()
 
     parser = argparse.ArgumentParser(description="Enrich JFIA catalog via Haiku")
     parser.add_argument("catalog_path", help="Path to jfia_catalog.json")
