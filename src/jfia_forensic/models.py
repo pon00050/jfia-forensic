@@ -8,6 +8,7 @@ from pydantic import BaseModel, field_validator
 
 from .constants import (
     SCHEME_TYPES,
+    FSS_VIOLATION_CATEGORIES,
     KOREAN_APPLICABILITY_VALUES,
 )
 
@@ -71,6 +72,20 @@ class EnrichedArticle(BaseModel):
     data_fields: list[str] = []
     korean_applicability: str = "UNKNOWN"
     fss_violation_category: str | None = None
+
+    @field_validator("scheme_type", mode="before")
+    @classmethod
+    def coerce_scheme_type(cls, v: str | None) -> str | None:
+        if v is not None and v not in SCHEME_TYPES:
+            return None
+        return v
+
+    @field_validator("fss_violation_category", mode="before")
+    @classmethod
+    def coerce_fss_category(cls, v: str | None) -> str | None:
+        if v is not None and v not in FSS_VIOLATION_CATEGORIES:
+            return None
+        return v
 
     @field_validator("korean_applicability")
     @classmethod
