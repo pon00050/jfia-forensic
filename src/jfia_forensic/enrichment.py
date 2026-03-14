@@ -31,6 +31,11 @@ ENRICHMENT_TOOL = {
             "scheme_type": {
                 "type": ["string", "null"],
                 "enum": SCHEME_TYPES + [None],
+                "description": (
+                    "cb_bw_manipulation = convertible bond or bond warrant schemes "
+                    "where issuers depress stock price before conversion/exercise "
+                    "(common in Korean markets). Use null if no scheme clearly fits."
+                ),
             },
             "signals": {"type": "array", "items": {"type": "string"}},
             "data_fields": {"type": "array", "items": {"type": "string"}},

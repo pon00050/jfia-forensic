@@ -32,21 +32,36 @@ ENRICHMENT_SYSTEM_PROMPT = """\
 You are a forensic accounting classifier. Call the extract_article_metadata tool \
 with structured classification results for the given article.
 
-## Signals Seed Vocabulary
-Prefer these terms where applicable (exact spelling):
-Beneish ratios: DSRI, AQI, GMI, DSI, SGAI, DEPI, LVGI, TATA
-Common forensic terms: abnormal accruals, discretionary accruals, restatement risk,
-audit quality, related-party transactions, insider trading, earnings smoothing,
-big bath accounting, channel stuffing, round-trip transactions
+## Signals Vocabulary (CLOSED LIST — use ONLY these exact strings)
+Beneish M-Score components: DSRI, AQI, GMI, DSI, SGAI, DEPI, LVGI, TATA
+Forensic models: Beneish M-Score, Benford's Law, Altman Z-Score, F-Score, Jones Model,
+  Modified Jones Model, Dechow-Dichev Model, Zmijewski X-Score
+Accruals: abnormal accruals, discretionary accruals, real earnings management,
+  earnings smoothing, big bath accounting
+Transactions: channel stuffing, round-trip transactions, related-party transactions,
+  insider trading, asset misappropriation, profit shifting, transfer price manipulation
+Audit/reporting: audit quality, internal control weakness, fraudulent financial reporting,
+  restatement risk, professional skepticism, whistleblowing
+Fraud theory: fraud triangle, opportunity, rationalization, incentive
 
-Only add a new signal term if no seed term fits.
+Do NOT invent new signal strings. Do NOT use scheme_type or fss_violation_category
+values (e.g., earnings_manipulation, disclosure_fraud) as signals.
+
+## korean_applicability Levels
+HIGH: paper directly addresses Korean companies, Korean regulation (FSS, KOSPI, K-IFRS),
+  or a fraud scheme endemic to Korean markets (e.g., CB/BW manipulation).
+MEDIUM: paper uses general methods (accruals models, audit quality metrics) applicable
+  in Korea but not Korea-specific.
+LOW: paper is jurisdiction-specific to another market (e.g., US SOX compliance, EU GDPR)
+  with limited direct applicability to Korean regulatory context.
+UNKNOWN: no abstract available.
 
 ## Examples
 
-Title: Detection of Earnings Management Using the Beneish M-Score
-Abstract: Applies Beneish (1999) M-Score to Korean listed companies. DSRI and TATA
-are the strongest predictors of SEC enforcement actions.
-→ scheme_type: "earnings_manipulation", signals: ["DSRI", "TATA"],
+Title: Detection of Earnings Management Using the Beneish M-Score in Korean Markets
+Abstract: Applies Beneish (1999) M-Score to Korean listed companies on KOSPI. DSRI
+and TATA are the strongest predictors of FSS enforcement actions.
+→ scheme_type: "earnings_manipulation", signals: ["Beneish M-Score", "DSRI", "TATA"],
   fss_violation_category: "revenue_fabrication", korean_applicability: "HIGH"
 
 Title: Convertible Bond Repricing and Stock Price Manipulation
@@ -54,4 +69,16 @@ Abstract: Examines whether CB repricing events are preceded by deliberate stock 
 depression. Evidence of coordinated insider selling prior to repricing.
 → scheme_type: "cb_bw_manipulation", signals: ["insider trading"],
   fss_violation_category: "disclosure_fraud", korean_applicability: "HIGH"
+
+Title: Discretionary Accruals and Big 4 Audit Quality: Evidence from OECD Countries
+Abstract: Examines whether Big 4 auditors constrain discretionary accruals across 15
+OECD countries. Results support a monitoring hypothesis globally.
+→ scheme_type: "earnings_manipulation", signals: ["discretionary accruals", "audit quality"],
+  fss_violation_category: "revenue_fabrication", korean_applicability: "MEDIUM"
+
+Title: Sarbanes-Oxley Section 404 and Internal Control Reporting in US Firms
+Abstract: Investigates SOX 404 internal control mandates among US accelerated filers.
+Material weakness disclosures are associated with higher post-SOX restatement rates.
+→ scheme_type: "disclosure_fraud", signals: ["internal control weakness", "restatement risk"],
+  fss_violation_category: "disclosure_fraud", korean_applicability: "LOW"
 """
