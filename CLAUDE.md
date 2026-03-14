@@ -37,11 +37,12 @@ python -m jfia_forensic.enrichment data/raw/jfia_catalog.json \
 
 ```
 src/jfia_forensic/
-    __init__.py      — Public API: Detectlet, DetectletRegistry, JFIACatalog
+    __init__.py      — Public API: all models + DetectletRegistry, JFIACatalog (see __all__)
     constants.py     — SCHEME_TYPES, FSS_VIOLATION_CATEGORIES, HAIKU_MODEL
     models.py        — Pydantic: Detectlet, Signal, JFIACitation, JFIAArticle, EnrichedArticle
     registry.py      — DetectletRegistry: from_yaml_dir(), get(), search(), all()
-    catalog.py       — JFIACatalog: load(), search(), by_scheme(), by_keyword()
+    catalog.py       — JFIACatalog: load(catalog_path, enriched_path=None), search(), by_scheme(), by_keyword()
+                       by_scheme() returns empty list if enriched_path was not passed to load()
     enrichment.py    — enrich_catalog(): Haiku batch → EnrichedArticle list → JSON
 
 data/curated/
@@ -54,11 +55,10 @@ data/raw/            — jfia_catalog.json (gitignored — source from career-de
 ## Conventions
 
 - All models use `BaseModel`, Python 3.11+ union syntax (`float | None`)
-- No runtime validators; models document contracts only
-- `HAIKU_MODEL = "claude-haiku-4-5-20251001"` — never use opus in this project
+- `Detectlet.scheme` and `EnrichedArticle.korean_applicability` have `@field_validator` enforcing controlled vocabulary (`SCHEME_TYPES` and `KOREAN_APPLICABILITY_VALUES`); all other fields are unenforced
+- `HAIKU_MODEL = "claude-haiku-4-5"` — never use opus in this project; always use the short model ID (no date suffix)
 - Enrichment is idempotent: re-running with same input produces same output
-- `catalog.search()` uses keyword overlap on title + keywords + abstract; falls back
-  to title-only if enriched JSON absent
+- `catalog.search()` scores across title (3pts), keywords (2pts), abstract (1pt); no enriched-data dependency
 
 ## TDD Rules
 
