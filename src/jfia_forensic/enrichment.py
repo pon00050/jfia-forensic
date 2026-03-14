@@ -35,14 +35,16 @@ def _enrich_one(client, article: JFIAArticle) -> EnrichedArticle:
 
     prompt = f"Title: {article.title}\n\nAbstract: {article.abstract}"
 
+    # Auth and connection errors must propagate — do not swallow them.
+    # Only catch parse/validation failures from malformed model responses.
+    response = client.messages.create(
+        model=HAIKU_MODEL,
+        max_tokens=512,
+        system=ENRICHMENT_SYSTEM_PROMPT,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    text = response.content[0].text.strip()
     try:
-        response = client.messages.create(
-            model=HAIKU_MODEL,
-            max_tokens=512,
-            system=ENRICHMENT_SYSTEM_PROMPT,
-            messages=[{"role": "user", "content": prompt}],
-        )
-        text = response.content[0].text.strip()
         parsed = json.loads(text)
         return EnrichedArticle(
             article=article,
@@ -52,7 +54,7 @@ def _enrich_one(client, article: JFIAArticle) -> EnrichedArticle:
             korean_applicability=parsed.get("korean_applicability") or "UNKNOWN",
             fss_violation_category=parsed.get("fss_violation_category"),
         )
-    except (json.JSONDecodeError, KeyError, ValueError, Exception):
+    except (json.JSONDecodeError, KeyError, ValueError):
         return _build_fallback(article)
 
 

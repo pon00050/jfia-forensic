@@ -85,12 +85,14 @@ def test_enrichment_handles_malformed_response():
 
 
 def test_enrichment_handles_api_exception():
-    """API exception returns fallback EnrichedArticle."""
+    """API/auth exceptions propagate — they are NOT silently swallowed.
+    Only JSON parse failures return the fallback EnrichedArticle.
+    """
     article = _make_article()
     client = MagicMock()
     client.messages.create.side_effect = Exception("API error")
-    result = _enrich_one(client, article)
-    assert result.korean_applicability == "UNKNOWN"
+    with pytest.raises(Exception, match="API error"):
+        _enrich_one(client, article)
 
 
 def test_enrichment_output_schema(tmp_path):

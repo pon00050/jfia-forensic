@@ -90,6 +90,43 @@ def sample_detectlet_yaml(tmp_path: Path) -> Path:
 
 
 @pytest.fixture
+def two_article_catalog(tmp_path: Path) -> Path:
+    """2-article catalog JSON in tmp_path (one with abstract, one without)."""
+    catalog = {
+        "scraped_at": "2025-01-01",
+        "total_articles": 2,
+        "issues": [
+            {
+                "volume": 1, "issue": 1, "period": "2009 Q1",
+                "contentid": "abc", "url": "https://example.com",
+                "is_special_issue": False,
+                "articles": [
+                    {
+                        "index": 1,
+                        "title": "Earnings Management and Fraud Detection",
+                        "authors": ["Smith A"],
+                        "abstract": "This study examines earnings manipulation using accruals.",
+                        "keywords": ["earnings management", "accruals"],
+                        "pdf_url": "https://example.com/1.pdf",
+                    },
+                    {
+                        "index": 2,
+                        "title": "Audit Quality and Fraud Risk",
+                        "authors": ["Lee B"],
+                        "abstract": "",
+                        "keywords": [],
+                        "pdf_url": "https://example.com/2.pdf",
+                    },
+                ],
+            }
+        ],
+    }
+    p = tmp_path / "two_article_catalog.json"
+    p.write_text(json.dumps(catalog), encoding="utf-8")
+    return p
+
+
+@pytest.fixture
 def mock_anthropic_client() -> MagicMock:
     """Monkeypatched Anthropic client returning valid JSON."""
     valid_response = json.dumps({
