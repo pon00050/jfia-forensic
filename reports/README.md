@@ -39,7 +39,7 @@ Formal post-mortem of the completed run. Contains:
 | 1 | — | `first_run_lessons.md` | Initial run (JSON prompt) | scheme_type: 129 freeform values; signals: 1,978 unique |
 | 2 | — | `second_run_lessons.md` | Forced tool use + enum constraints | scheme_type: 7 valid ✓; signals: 632 unique (89% singletons) |
 | 3 | `third_run_prep.md` | `third_run_lessons.md` | Closed signals vocabulary + applicability redefinition | signals: 110 unique, 7.8% OOV; HIGH: 3→17 |
-| 4 | `fourth_run_prep.md` | *(pending)* | Seed expansion + underscore fix + stronger anti-leaking | target: OOV <5%, leaking 0 |
+| 4 | `fourth_run_prep.md` | `fourth_run_lessons.md` | Seed expansion + underscore fix + explicit anti-leak list | OOV regressed 7.8%→13.9%; seed expansion backfired; leaking worsened |
 
 ---
 
