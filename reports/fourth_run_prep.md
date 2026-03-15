@@ -86,3 +86,82 @@ Before launching the full run, verify on `--limit 20` output:
 - [ ] OOV list contains only legitimate new forensic terms (if any)
 - [ ] `korean_applicability` distribution roughly matches run 3 proportions
 - [ ] Any new OOV terms: evaluate and add to seed before full run
+
+---
+
+## Smoke Test 1 Results (--limit 20)
+
+Run against the first 20 articles with the initial fourth-run prompt changes applied.
+
+### Results summary
+- Unique signals: 25 | Total: 66 | OOV occurrences: 5
+- Underscore variants: **0** — prohibition working
+- `korean_applicability`: UNKNOWN 6, MEDIUM 9, LOW 5, HIGH 0
+
+### OOV findings — three distinct situations
+
+**1. `disclosure_fraud` (1× — leaking, persistent)**
+The model classified an article as `disclosure_fraud` and then immediately used it
+again as a signal in the same article. This persisted despite the explicit forbidden
+list. The model's tendency to mirror its own output appears deep enough that
+prompt-level rules alone cannot fully suppress it. Expected to produce 3–6 occurrences
+in the full run (down from 8× in run 3, but not zero).
+
+**2. `board composition`, `CEO duality`, `audit committee composition` (1× each — legitimate OOV)**
+A coherent cluster of corporate governance structure signals used as fraud predictors.
+All three arrived in the same articles. These are legitimate forensic signals, not
+classification labels. Given how frequently corporate governance appears in forensic
+accounting literature, these likely occur 20–40× each in the full corpus.
+**Decision: add all three to seed under a new "Governance" category.**
+
+**3. `Sarbanes-Oxley` (1× — not a valid signal)**
+A regulatory framework name, not a measurable indicator. Should not appear as a signal.
+**Decision: add to the forbidden list.**
+
+### Checklist outcome
+- [x] Zero underscore-variant signals
+- [ ] Zero scheme/category labels appearing as signals — `disclosure_fraud` (1×) persists
+- [x] OOV contains only legitimate new terms (plus one forbidden label)
+- [x] `korean_applicability` distribution consistent with run 3
+- [ ] New OOV terms evaluated — governance cluster requires seed addition before full run
+
+### Actions before full run
+1. Add to seed (Governance category): `board composition`, `CEO duality`,
+   `audit committee composition`
+2. Add to forbidden list: `Sarbanes-Oxley`
+3. Re-smoke to confirm zero OOV before launching full 469-article run
+
+---
+
+## Smoke Test 2 Results (--limit 20)
+
+Run after adding governance terms and `Sarbanes-Oxley` to forbidden list.
+
+### Results summary
+- Unique signals: 28 | Total: 68 | OOV occurrences: 8 (7 unique)
+- Underscore variants: **0**
+- `korean_applicability`: UNKNOWN 7, MEDIUM 7, LOW 5, HIGH 1
+
+### OOV findings
+
+| Term | Count | Verdict |
+|---|---|---|
+| `disclosure fraud` | 1× | Persistent leaking — explicitly forbidden, still produced. Irreducible via prompt. |
+| `fraud detection` | 2× | Field-level descriptor, not a specific signal. Do not add. |
+| `compliance` | 1× | Too generic. Do not add. |
+| `audit planning` | 1× | Audit process term, not a fraud indicator. Do not add. |
+| `control environment` | 1× | Legitimate — COSO framework component, meaningful forensic signal. **Add.** |
+| `tests of controls` | 1× | Legitimate — specific audit procedure. **Add.** |
+| `stock option compensation` | 1× | Legitimate — directly tied to backdating schemes already in seed. **Add.** |
+
+### Assessment: diminishing returns on smoke testing
+
+Each smoke iteration is catching fewer issues of decreasing materiality. The remaining
+OOV after this patch will be dominated by `disclosure fraud` leaking (irreducible via
+prompting — model mirrors its own classification output regardless of explicit
+prohibition) and rare one-off terms that will appear too infrequently in the full corpus
+to affect aggregate signal quality.
+
+### Actions before full run
+1. Add to seed: `control environment`, `tests of controls`, `stock option compensation`
+2. Proceed directly to full 469-article run — no third smoke needed

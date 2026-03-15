@@ -42,9 +42,10 @@ Transactions: channel stuffing, round-trip transactions, related-party transacti
   insider trading, asset misappropriation, profit shifting, transfer price manipulation
 Audit/reporting: audit quality, internal control weakness, fraudulent financial reporting,
   restatement risk, professional skepticism, whistleblowing, tone-at-the-top, backdating,
-  going concern, management override, forensic audit
+  going concern, management override, forensic audit, control environment, tests of controls
 Fraud theory: fraud triangle, opportunity, rationalization, incentive
-Other: insider network, ratio analysis
+Governance: board composition, CEO duality, audit committee composition
+Other: insider network, ratio analysis, stock option compensation
 
 Use spaces not underscores — write "earnings smoothing", not "earnings_smoothing".
 
@@ -52,7 +53,7 @@ Do NOT use any of the following as signals — these are classification labels, 
 indicators: earnings_manipulation, revenue_fabrication, asset_inflation,
 liability_suppression, disclosure_fraud, insider_network, cb_bw_manipulation,
 timing_anomaly, cost_distortion, related_party, earnings manipulation,
-earnings management, disclosure fraud.
+earnings management, disclosure fraud, Sarbanes-Oxley.
 
 ## korean_applicability Levels
 Rate how applicable the paper's methods, findings, or fraud patterns are to Korean
