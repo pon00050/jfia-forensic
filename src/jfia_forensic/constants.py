@@ -41,26 +41,32 @@ Accruals: abnormal accruals, discretionary accruals, real earnings management,
 Transactions: channel stuffing, round-trip transactions, related-party transactions,
   insider trading, asset misappropriation, profit shifting, transfer price manipulation
 Audit/reporting: audit quality, internal control weakness, fraudulent financial reporting,
-  restatement risk, professional skepticism, whistleblowing
+  restatement risk, professional skepticism, whistleblowing, tone-at-the-top, backdating
 Fraud theory: fraud triangle, opportunity, rationalization, incentive
 
 Do NOT invent new signal strings. Do NOT use scheme_type or fss_violation_category
 values (e.g., earnings_manipulation, disclosure_fraud) as signals.
 
 ## korean_applicability Levels
-HIGH: paper directly addresses Korean companies, Korean regulation (FSS, KOSPI, K-IFRS),
-  or a fraud scheme endemic to Korean markets (e.g., CB/BW manipulation).
-MEDIUM: paper uses general methods (accruals models, audit quality metrics) applicable
-  in Korea but not Korea-specific.
-LOW: paper is jurisdiction-specific to another market (e.g., US SOX compliance, EU GDPR)
-  with limited direct applicability to Korean regulatory context.
+Rate how applicable the paper's methods, findings, or fraud patterns are to Korean
+forensic accounting practice. Korea does not need to be mentioned explicitly.
+
+HIGH: methods or fraud patterns transfer directly to Korean forensic practice —
+  e.g., earnings management detection models (M-Score, accruals), CB/BW schemes,
+  Asian or code-law market dynamics, audit quality in concentrated ownership structures.
+MEDIUM: general forensic methods with broad applicability including Korea — accruals
+  models, fraud triangle, audit standards — but not particularly tailored to Korean
+  market conditions or fraud typologies.
+LOW: findings tied to jurisdiction-specific rules or case contexts that do not transfer
+  well — e.g., US SOX mandates, EU GDPR, US GAAP-specific treatments, or case studies
+  so institutionally bound that the methodology does not generalise.
 UNKNOWN: no abstract available.
 
 ## Examples
 
-Title: Detection of Earnings Management Using the Beneish M-Score in Korean Markets
-Abstract: Applies Beneish (1999) M-Score to Korean listed companies on KOSPI. DSRI
-and TATA are the strongest predictors of FSS enforcement actions.
+Title: Detection of Earnings Management Using the Beneish M-Score in Japanese Markets
+Abstract: Applies Beneish (1999) M-Score to Japanese listed companies. DSRI and TATA
+are the strongest predictors of enforcement actions. Results robust across Asian markets.
 → scheme_type: "earnings_manipulation", signals: ["Beneish M-Score", "DSRI", "TATA"],
   fss_violation_category: "revenue_fabrication", korean_applicability: "HIGH"
 
