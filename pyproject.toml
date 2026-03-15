@@ -25,6 +25,9 @@ dev = [
 [tool.hatch.build.targets.wheel]
 packages = ["src/jfia_forensic"]
 
+[tool.uv]
+compile-bytecode = false
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
