@@ -96,3 +96,47 @@ Material weakness disclosures are associated with higher post-SOX restatement ra
 → scheme_type: "disclosure_fraud", signals: ["internal control weakness", "restatement risk"],
   fss_violation_category: "disclosure_fraud", korean_applicability: "LOW"
 """
+
+SIGNAL_SEED_VOCABULARY: frozenset[str] = frozenset({
+    # Beneish M-Score components
+    "DSRI", "AQI", "GMI", "DSI", "SGAI", "DEPI", "LVGI", "TATA",
+    # Forensic models
+    "Beneish M-Score", "Benford's Law", "Altman Z-Score", "F-Score",
+    "Jones Model", "Modified Jones Model", "Dechow-Dichev Model", "Zmijewski X-Score",
+    # Accruals
+    "abnormal accruals", "discretionary accruals", "real earnings management",
+    "earnings smoothing", "big bath accounting",
+    # Transactions
+    "channel stuffing", "round-trip transactions", "related-party transactions",
+    "insider trading", "asset misappropriation", "profit shifting",
+    "transfer price manipulation",
+    # Audit/reporting
+    "audit quality", "internal control weakness", "fraudulent financial reporting",
+    "restatement risk", "professional skepticism", "whistleblowing", "tone-at-the-top",
+    "backdating", "going concern", "management override", "forensic audit",
+    "control environment", "tests of controls",
+    # Fraud theory
+    "fraud triangle", "opportunity", "rationalization", "incentive",
+    # Governance
+    "board composition", "CEO duality", "audit committee composition",
+    # Other
+    "insider network", "ratio analysis", "stock option compensation",
+})
+
+
+def _expand_to_surface_forms(terms: list[str]) -> set[str]:
+    result = set()
+    for t in terms:
+        result.add(t)
+        result.add(t.replace("_", " "))
+    return result
+
+
+SIGNAL_FORBIDDEN_LABELS: frozenset[str] = frozenset(
+    (
+        _expand_to_surface_forms(SCHEME_TYPES)
+        | _expand_to_surface_forms(FSS_VIOLATION_CATEGORIES)
+        | {"earnings management", "Sarbanes-Oxley"}
+    )
+    - SIGNAL_SEED_VOCABULARY  # never forbid a term that is explicitly in the seed
+)

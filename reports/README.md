@@ -23,6 +23,9 @@ the full run is launched. Contains:
 Formal post-mortem of the completed run. Contains:
 
 - **Run summary** — article counts, pipeline version
+- **Cost & token usage** — model, submission mode, total input/output tokens, per-article
+  averages, and total cost broken down by input/output at the applicable rate (see pricing
+  table below). Always record the service tier (`batch` vs standard) and batch ID if applicable.
 - **Data quality findings** — tables comparing this run to prior runs across all
   five enriched fields
 - **What worked** — changes that achieved their target, with evidence
@@ -32,14 +35,29 @@ Formal post-mortem of the completed run. Contains:
 
 ---
 
+## Model Pricing Reference
+
+Rates as of 2026-03-15. Update this table if pricing changes.
+
+| Model | Input (standard) | Output (standard) | Input (batch) | Output (batch) |
+|-------|-----------------|-------------------|---------------|----------------|
+| `claude-haiku-4-5` | $0.80/MTok | $4.00/MTok | $0.40/MTok | $2.00/MTok |
+| `claude-sonnet-4-5` | $3.00/MTok | $15.00/MTok | $1.50/MTok | $7.50/MTok |
+| `claude-opus-4-5` | $15.00/MTok | $75.00/MTok | $7.50/MTok | $37.50/MTok |
+
+Batch API = 50% discount on all tiers. This project uses Haiku only (see `CLAUDE.md`).
+
+---
+
 ## Run Index
 
-| Run | Prep | Lessons | Key change | Outcome |
-|-----|------|---------|------------|---------|
-| 1 | — | `first_run_lessons.md` | Initial run (JSON prompt) | scheme_type: 129 freeform values; signals: 1,978 unique |
-| 2 | — | `second_run_lessons.md` | Forced tool use + enum constraints | scheme_type: 7 valid ✓; signals: 632 unique (89% singletons) |
-| 3 | `third_run_prep.md` | `third_run_lessons.md` | Closed signals vocabulary + applicability redefinition | signals: 110 unique, 7.8% OOV; HIGH: 3→17 |
-| 4 | `fourth_run_prep.md` | `fourth_run_lessons.md` | Seed expansion + underscore fix + explicit anti-leak list | OOV regressed 7.8%→13.9%; seed expansion backfired; leaking worsened |
+| Run | Prep | Lessons | Key change | Total cost | Outcome |
+|-----|------|---------|------------|------------|---------|
+| 1 | — | `first_run_lessons.md` | Initial run (JSON prompt) | — | scheme_type: 129 freeform; signals: 1,978 unique |
+| 2 | — | `second_run_lessons.md` | Forced tool use + enum constraints | — | scheme_type: 7 valid ✓; signals: 632 unique (89% singletons) |
+| 3 | `third_run_prep.md` | `third_run_lessons.md` | Closed signals vocabulary + applicability redefinition | ~$0.55 | signals: 110 unique, 7.8% OOV; HIGH: 3→17 |
+| 4 | `fourth_run_prep.md` | `fourth_run_lessons.md` | Seed expansion + underscore fix + explicit anti-leak list | ~$0.55 | OOV regressed 7.8%→13.9%; seed expansion backfired |
+| 5 | `fifth_run_prep.md` | `fifth_run_lessons.md` | Option B (signals enum) + Batch API + normalise.py | $0.4847 (batch) | OOV 12.3%→2.51%; unique signals 208→81; HIGH 17→21 |
 
 ---
 
@@ -51,10 +69,11 @@ Follow this sequence for every run:
 2. **Smoke test:** `python -m jfia_forensic.enrichment ... --limit 20`
 3. **Inspect smoke output** — check OOV signals, applicability distribution, leaking
 4. **Patch seed if needed** — add any OOV terms that are legitimate; re-smoke if changes were substantial
-5. **Full run:** `python -m jfia_forensic.enrichment ...` (background task)
-6. **Analyse output** — run the standard inspection queries (see below)
-7. **Write `{n}_run_lessons.md`** — post-mortem with three-run comparison tables
-8. **Commit:** `data/curated/jfia_enriched.json` + both report files
+5. **Full run:** `python -m jfia_forensic.enrichment ... --batch` (preferred) or sequential
+6. **Normalise:** `python -m jfia_forensic.normalise data/curated/jfia_enriched.json`
+7. **Analyse output** — run the standard inspection queries (see below)
+8. **Write `{n}_run_lessons.md`** — post-mortem including cost/token table
+9. **Commit:** `data/curated/jfia_enriched.json` + both report files
 
 ---
 
@@ -65,6 +84,7 @@ Run these after every full run to populate the lessons document:
 ```python
 import json
 from collections import Counter
+from jfia_forensic.constants import SIGNAL_SEED_VOCABULARY, SIGNAL_FORBIDDEN_LABELS
 
 data = json.load(open('data/curated/jfia_enriched.json', encoding='utf-8'))
 
@@ -74,11 +94,29 @@ fss      = Counter(a['fss_violation_category'] for a in data if a['fss_violation
 ka       = Counter(a['korean_applicability'] for a in data)
 
 # Signals analysis
-all_signals = [s for a in data for s in a.get('signals', [])]
+all_signals = [s for a in data for s in (a.get('signals') or [])]
 signal_counter = Counter(all_signals)
-oov = [s for s in all_signals if s not in SEED]          # define SEED from constants
-leaking = [s for s in all_signals if s in SCHEME_TYPES + FSS_VIOLATION_CATEGORIES]
+oov = [s for s in all_signals if s not in SIGNAL_SEED_VOCABULARY]
 
 # HIGH articles
 highs = [a for a in data if a['korean_applicability'] == 'HIGH']
+```
+
+### Cost query (batch run — run after retrieval, before writing output)
+
+```python
+from collections import Counter
+
+total_input = total_output = 0
+for item in client.messages.batches.results(BATCH_ID):
+    if item.result.type == 'succeeded':
+        u = item.result.message.usage
+        total_input  += u.input_tokens
+        total_output += u.output_tokens
+
+input_cost  = total_input  / 1_000_000 * 0.40   # batch rate
+output_cost = total_output / 1_000_000 * 2.00   # batch rate
+print(f'Input:  {total_input:,} tokens  ${input_cost:.4f}')
+print(f'Output: {total_output:,} tokens  ${output_cost:.4f}')
+print(f'Total:  ${input_cost + output_cost:.4f}')
 ```

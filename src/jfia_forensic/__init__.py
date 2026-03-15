@@ -15,6 +15,7 @@ from .models import (
 )
 from .registry import DetectletRegistry
 from .catalog import JFIACatalog
+from .downloader import download
 
 __all__ = [
     "Detectlet",
@@ -25,4 +26,5 @@ __all__ = [
     "JFIACatalog",
     "JFIACitation",
     "Signal",
+    "download",
 ]

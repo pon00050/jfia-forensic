@@ -1,0 +1,621 @@
+[
+  {
+    "article": {
+      "index": 1,
+      "title": "Bernard Madoff and the Solo Auditor Red Flag",
+      "authors": [
+        "Ross D. Fuerman"
+      ],
+      "abstract": "In the wake of the disclosure of the Bernard Madoff fraud, attention has been drawn to the use of a solo auditor by Bernard L. Madoff Investment Securities LLC. Some claim that the use of a solo auditor was a red flag, or a symptom of fraud, that was ignored by investors, regulators, feeder fund operators, and auditors of the feeder funds. This motivates empirical research to determine whether evidence suggests that solo auditors are lower quality auditors than other auditors, and thus really a red flag.",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-1_1.pdf",
+      "volume": 1,
+      "issue": 1,
+      "period": "January-June 2009"
+    },
+    "scheme_type": "disclosure_fraud",
+    "signals": [
+      "audit quality",
+      "management override",
+      "professional skepticism",
+      "internal control weakness"
+    ],
+    "data_fields": [
+      "auditor independence",
+      "auditor firm size",
+      "audit committee oversight",
+      "feeder fund governance"
+    ],
+    "korean_applicability": "MEDIUM",
+    "fss_violation_category": "disclosure_fraud"
+  },
+  {
+    "article": {
+      "index": 2,
+      "title": "Auditor Consideration of Tone-at-the-top in Audit Planning: An Experimental Investigation",
+      "authors": [
+        "David Kerr",
+        "Michelle C. Diaz"
+      ],
+      "abstract": "This paper reports the results of an experiment that investigates the manner in which auditors integrate the client’s tone-at-the-top, an important element of the internal control system, with other information during audit planning. Four factors relevant to planning an audit are examined: (1) the client’s tone-at-the-top, (2) the results of tests of controls, (3) the results of planning-phase analytical procedures, and (4) stability of the client company. Results of the experiment reveal a significant three-way interaction among the client’s tone-at-the-top, the auditor’s planning-phase analytical procedures, and tests of controls. This study extends prior audit planning research by examining the main and interactive effects of tone-at-the-top on audit planning decisions. This study also extends prior research by including a greater number of constructs relevant to audit planning decisions, allowing investigation of the interactive relationships among the constructs, as well as the generality of prior results in a more complex context that enables examination of previously unexplored interactions.",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-1_2.pdf",
+      "volume": 1,
+      "issue": 1,
+      "period": "January-June 2009"
+    },
+    "scheme_type": null,
+    "signals": [
+      "tone-at-the-top",
+      "internal control weakness",
+      "tests of controls",
+      "professional skepticism",
+      "audit quality"
+    ],
+    "data_fields": [
+      "tone-at-the-top",
+      "tests of controls",
+      "planning-phase analytical procedures",
+      "client stability",
+      "audit planning decisions"
+    ],
+    "korean_applicability": "MEDIUM",
+    "fss_violation_category": null
+  },
+  {
+    "article": {
+      "index": 3,
+      "title": "Medicare Billing Risk Perceptions of Hospitals Operating Under Corporate Integrity Agreements",
+      "authors": [
+        "David B. Pariser",
+        "Ashok B. Abbott"
+      ],
+      "abstract": "Between 1987 and 2006, the federal government recovered $18.1 billion in settlements under the False Claims Act (FCA), of which $11.5 billion or 63 percent arose from settlements in the healthcare industry. False Claims Act has become a favorite tool for the Health and Human Services/Office of Inspector General (HHS/OIG) to deter fraudulent billing practices. Under this act, healthcare providers who knowingly submit false or fraudulent claims are liable for three times the government’s loss plus a civil penalty of $5,000 to $11,000 for each false claim. HHS/OIG has issued compliance guidelines to encourage healthcare providers to develop voluntary compliance programs capable of detecting and preventing fraudulent billing practices. When the HHS/OIG investigates a healthcare provider that has allegedly submitted false or fraudulent claims to Medicare, it frequently negotiates a settlement with the provider to resolve potential liability arising from violations of the False Claims Act. The settlement usually obligates the provider to adhere to an involuntary Corporate Integrity Agreement (CIA), usually lasting five years, more restrictive and onerous than voluntary compliance programs. This paper describes HHS/OIG’s voluntary compliance guidelines, components of Corporate Integrity Agreements, and six billing schemes.",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-1_3.pdf",
+      "volume": 1,
+      "issue": 1,
+      "period": "January-June 2009"
+    },
+    "scheme_type": "revenue_fabrication",
+    "signals": [
+      "fraudulent financial reporting",
+      "internal control weakness",
+      "management override",
+      "control environment",
+      "tone-at-the-top",
+      "forensic audit"
+    ],
+    "data_fields": [
+      "Medicare claims",
+      "False Claims Act settlements",
+      "Corporate Integrity Agreements",
+      "billing schemes",
+      "compliance programs"
+    ],
+    "korean_applicability": "LOW",
+    "fss_violation_category": "revenue_fabrication"
+  },
+  {
+    "article": {
+      "index": 4,
+      "title": "Pre and Post-SOX Association between Audit Firm Tenure and Earnings Management Risk",
+      "authors": [
+        "Santanu Mitra",
+        "Donald R. Deis",
+        "Mahmud Hossain"
+      ],
+      "abstract": "This study investigates the effect of audit firm tenure on earnings management risk. We perform multivariate regression analyses to examine the empirical relationship between auditor tenure and the probability of earnings manipulation using Beneish’s (1999) framework. The analysis covering a five year time-period surrounding the enactment of SOX produces evidence of a negative relationship between the length of auditor tenure and the probability of earnings manipulation (termed as earnings management risk). Additional analysis reveals that the risk of financial misreporting is more likely to be present in the first three years of auditor tenure in the pre-SOX period. This result is consistent with similar studies prior to SOX (e.g., Carcello and Nagy 2004, Myers et al. 2003, Johnson et al. 2002, Bartov and Cohen 2007, Cohen et al. 2007). Further analyses show that the negative association between audit firm tenure and earnings management risk is substantially moderated in the post-SOX period. We posit that heightened scrutiny over audits (e.g., PCAOB inspections) and the perceived threat of additional regulations to limit auditor tenure explain this finding. Our main results are robust to alternative specifications of earnings management risk and auditor tenure, and in the presence of additional controls for heavily represented industries, mergers and acquisitions, restructuring, issue of new equity and debt securities, change of auditor from Arthur Andersen, and extreme financial performance.",
+      "keywords": [
+        "Audit firm tenure",
+        "Earnings management risk",
+        "M-SCORE",
+        "M-FACTOR",
+        "Sarbanes-Oxley Act",
+        "SOX transition period",
+        "Pre-SOX",
+        "Post-SOX."
+      ],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-1_4.pdf",
+      "volume": 1,
+      "issue": 1,
+      "period": "January-June 2009"
+    },
+    "scheme_type": "earnings_manipulation",
+    "signals": [
+      "Beneish M-Score",
+      "audit quality",
+      "internal control weakness",
+      "restatement risk",
+      "DSRI",
+      "AQI",
+      "GMI",
+      "DSI",
+      "SGAI",
+      "DEPI",
+      "LVGI",
+      "TATA"
+    ],
+    "data_fields": [
+      "auditor tenure",
+      "earnings management risk",
+      "pre-SOX period",
+      "post-SOX period",
+      "Beneish M-Score components",
+      "PCAOB inspections",
+      "Arthur Andersen auditor changes"
+    ],
+    "korean_applicability": "MEDIUM",
+    "fss_violation_category": "revenue_fabrication"
+  },
+  {
+    "article": {
+      "index": 5,
+      "title": "Data-Driven Fraud Detection Using Detectlets",
+      "authors": [
+        "Conan C. Albrecht",
+        "Chad O. Albrecht"
+      ],
+      "abstract": "This paper describes an architecture that makes the data-driven fraud detection method practical and efficient through the creation of a worldwide repository of fraud detection routines called Detectlets. A detectlet encodes background information about a scheme, its symptoms, programming scripts to detect it, and results interpretation. Detectlets mitigate many of the limitations faced by modern-day auditors: lack of time, lack of fraud methodology and supporting tools, lack of technical knowledge, and lack of scheme and symptom knowledge. The goal is to create a worldwide repository of detectlets that serves as a training center and downloadable tool resource for professional auditors and students. In addition, this detectlet repository could be the foundation of a ‘detective in a box’ system that could detect fraud using semi-autonomous methods.",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-1_5.pdf",
+      "volume": 1,
+      "issue": 1,
+      "period": "January-June 2009"
+    },
+    "scheme_type": null,
+    "signals": [
+      "forensic audit",
+      "professional skepticism"
+    ],
+    "data_fields": [
+      "fraud detection routines",
+      "detection methodology",
+      "symptom identification",
+      "automated detection scripts"
+    ],
+    "korean_applicability": "MEDIUM",
+    "fss_violation_category": null
+  },
+  {
+    "article": {
+      "index": 6,
+      "title": "An Empirical Examination of Whistleblowing Policies and Mechanisms at Universities",
+      "authors": [
+        "Michael D. Akers",
+        "Tim V. Eaton"
+      ],
+      "abstract": "",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-1_6.pdf",
+      "volume": 1,
+      "issue": 1,
+      "period": "January-June 2009"
+    },
+    "scheme_type": null,
+    "signals": [],
+    "data_fields": [],
+    "korean_applicability": "UNKNOWN",
+    "fss_violation_category": null
+  },
+  {
+    "article": {
+      "index": 7,
+      "title": "An Examination of Frequencies of Prosecuted Crimes in Selected Gaming Industry Establishments (Casinos)",
+      "authors": [
+        "Steve Wells",
+        "Tim Wilson",
+        "William Pinney"
+      ],
+      "abstract": "",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-1_7.pdf",
+      "volume": 1,
+      "issue": 1,
+      "period": "January-June 2009"
+    },
+    "scheme_type": null,
+    "signals": [],
+    "data_fields": [],
+    "korean_applicability": "UNKNOWN",
+    "fss_violation_category": null
+  },
+  {
+    "article": {
+      "index": 8,
+      "title": "An Historical Perspective on Fraud Detection: From Bankruptcy Models to Most Effective Indicators of Fraud in Recent Incidents",
+      "authors": [
+        "Mary Jane Lenard",
+        "Pervaiz Alam"
+      ],
+      "abstract": "",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-1_8.pdf",
+      "volume": 1,
+      "issue": 1,
+      "period": "January-June 2009"
+    },
+    "scheme_type": null,
+    "signals": [],
+    "data_fields": [],
+    "korean_applicability": "UNKNOWN",
+    "fss_violation_category": null
+  },
+  {
+    "article": {
+      "index": 9,
+      "title": "Data Mining Techniques for Auditing Attest Function and Fraud Detection",
+      "authors": [
+        "John Wang",
+        "G.S. Young"
+      ],
+      "abstract": "",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-1_9.pdf",
+      "volume": 1,
+      "issue": 1,
+      "period": "January-June 2009"
+    },
+    "scheme_type": null,
+    "signals": [],
+    "data_fields": [],
+    "korean_applicability": "UNKNOWN",
+    "fss_violation_category": null
+  },
+  {
+    "article": {
+      "index": 10,
+      "title": "Beliefs of Forensic Investigators Regarding Bi- and Uni-directional Behavior Analysis",
+      "authors": [
+        "Philip Beaulieu"
+      ],
+      "abstract": "In bi-directional behavior analysis, investigators look for changes in behaviors to detect deceit by interviewees, regardless of whether the result may be more or less of a behavior. Uni-directional analysis requires that either more or less of a behavior is observed, for example deceivers’ eye contact may be expected to decrease. Forensic investigation training materials refer to both approaches, bi- and uni-directional, and it is an empirical question whether a majority of investigators believes in either approach. A survey of 55 investigators’ beliefs with regard to 13 verbal and non-verbal behaviors found that the majority opinion sided with the uni-directional approach. This result held whether or not investigators had a background in policing. Implications for education and practice are discussed.",
+      "keywords": [
+        "Deceit",
+        "fraud",
+        "interview."
+      ],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-1_10.pdf",
+      "volume": 1,
+      "issue": 1,
+      "period": "January-June 2009"
+    },
+    "scheme_type": null,
+    "signals": [
+      "professional skepticism",
+      "fraud triangle"
+    ],
+    "data_fields": [
+      "behavioral indicators",
+      "investigator beliefs",
+      "deception detection",
+      "verbal and non-verbal cues"
+    ],
+    "korean_applicability": "MEDIUM",
+    "fss_violation_category": null
+  },
+  {
+    "article": {
+      "index": 1,
+      "title": "Corporate Governance and Misappropriation",
+      "authors": [
+        "Larelle Chapple",
+        "Colin Ferguson",
+        "Diana Kang"
+      ],
+      "abstract": "This study examines the occurrence of misappropriation-type fraud within Australian listed firms and the relation between the incidence of this type of fraud and a firm's governance strength. We measure governance strength using factors relating to traditional corporate governance, such as board composition, CEO duality, and audit committee composition, as well as factors relating to information technology governance. In our study, we use actual dollar amount of fraud reported by listed companies responding to the 2004 KPMG Fraud Survey as one of three different misappropriation measures and publicly available firm-specific data to measure the other variables in the model. Our study found that where the chief executive officer (CEO) also holds the position of chairperson of the board of directors, the likelihood of fraud increases. We also find that the greater the number of independent directors on the audit committee, the lower the level of fraud. Taken together, these results are particularly encouraging as they provide support for regulatory bodies such as the Australian Stock Exchange (ASX) and the Australian Securities and Investment Commission (ASIC), which place considerable emphasis on the importance of establishing good corporate governance practices. The study provides empirical evidence that employing good corporate governance reduces the risk of the misappropriation of assets.",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-2_1.pdf",
+      "volume": 1,
+      "issue": 2,
+      "period": "July-December 2009"
+    },
+    "scheme_type": null,
+    "signals": [
+      "asset misappropriation",
+      "board composition",
+      "CEO duality",
+      "audit committee composition"
+    ],
+    "data_fields": [
+      "board composition",
+      "CEO duality",
+      "audit committee composition",
+      "IT governance",
+      "fraud amount",
+      "firm-specific data"
+    ],
+    "korean_applicability": "MEDIUM",
+    "fss_violation_category": null
+  },
+  {
+    "article": {
+      "index": 2,
+      "title": "Board Monitoring, Audit Committee Effectiveness, and Financial Reporting Quality: Review and Synthesis of Empirical Evidence",
+      "authors": [
+        "Luo He"
+      ],
+      "abstract": "",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-2_2.pdf",
+      "volume": 1,
+      "issue": 2,
+      "period": "July-December 2009"
+    },
+    "scheme_type": null,
+    "signals": [],
+    "data_fields": [],
+    "korean_applicability": "UNKNOWN",
+    "fss_violation_category": null
+  },
+  {
+    "article": {
+      "index": 3,
+      "title": "The Stock Market Reaction to Allegations of Fraud and Earnings Manipulation",
+      "authors": [
+        "Tom Cook",
+        "Hugh Grove"
+      ],
+      "abstract": "We examine the stock price reaction to announcements that firms are alleged to be doing fraudulent financial reporting or manipulating earnings, using a sample of firms cited by the Securities Exchange Commission (SEC) in its Accounting and Auditing Enforcement Releases (AAERs) during the time period 1985-2005. We find a total 14% drop in stock price over a three day window surrounding the announcement. Subsamples of firms charged with fraud versus those charged with just earnings manipulation have stock prices drops of 16.64% and 8.51%, respectively, over this same window. There is a total 29% drop in stock price over a 30 day window surrounding the announcement. The post-announcement drift over the 30 trading days following the announcement is a total 7.6% drop in stock price with a negative 12.09% for the fraud subsample versus a negative 5.48% for the manipulator subsample. We also model the cross-section of the cumulative abnormal returns (CARs) using firm specific variables and find that the stock market reacts more negatively for high sales growth companies, for firms with more insiders on their Boards, for firms paying a larger percentage of total executive compensation in the form of stock options, and for firms whose CEO is not the company founder. Finally, we find that the size of a firm’s accounting accruals has no effect on the magnitude of the CAR. Forensic accountants and auditors can check for both financial and non-financial factors in assessing earnings management and fraud possibilities.",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-2_3.pdf",
+      "volume": 1,
+      "issue": 2,
+      "period": "July-December 2009"
+    },
+    "scheme_type": "earnings_manipulation",
+    "signals": [
+      "fraudulent financial reporting",
+      "abnormal accruals",
+      "stock option compensation",
+      "insider network",
+      "board composition",
+      "CEO duality",
+      "ratio analysis"
+    ],
+    "data_fields": [
+      "stock price reaction",
+      "cumulative abnormal returns (CARs)",
+      "sales growth",
+      "board composition",
+      "stock option compensation",
+      "CEO founder status",
+      "accruals magnitude"
+    ],
+    "korean_applicability": "MEDIUM",
+    "fss_violation_category": "revenue_fabrication"
+  },
+  {
+    "article": {
+      "index": 4,
+      "title": "Earnings Misstatements, Restatements, and Corporate Governance",
+      "authors": [
+        "William G. Heninger",
+        "Yongtae Kim",
+        "Sandeep Nabar"
+      ],
+      "abstract": "This study examines how the corporate governance characteristics of firms restating previously-reported accounting data change from the initial misstatement to the restatement. We endeavour to obtain insights into the changes that lead to the detection and correction of financial misreporting. By contrast, prior studies on restatements, concerned with the causes of misreporting, have focused their investigations around either the misstatement or the restatement period, but not both. We find that prior to misstatements, misstating firms are more likely to have CEOs who sit on nominating committees, less independent boards of directors, and less independent audit committees relative to control firms. Our results indicate that pre-misstatement agency conflicts are not resolved prior to restatements. Boards and audit committees continue to be relatively less independent at the time of the restatement. We also find that restating firms are more likely to experience CFO turnover. Based on the results, we conclude that the restatements, which constitute an admission and correction of accounting irregularities or material errors, are not attributable to governance improvements in firms.",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-2_4.pdf",
+      "volume": 1,
+      "issue": 2,
+      "period": "July-December 2009"
+    },
+    "scheme_type": "earnings_manipulation",
+    "signals": [
+      "CEO duality",
+      "board composition",
+      "audit committee composition",
+      "restatement risk",
+      "internal control weakness",
+      "fraudulent financial reporting"
+    ],
+    "data_fields": [
+      "CEO nominating committee membership",
+      "board independence",
+      "audit committee independence",
+      "CFO turnover",
+      "restatement frequency",
+      "governance characteristics"
+    ],
+    "korean_applicability": "MEDIUM",
+    "fss_violation_category": "disclosure_fraud"
+  },
+  {
+    "article": {
+      "index": 5,
+      "title": "The Role of the Auditor in Managing Public Disclosures: Potentially Misleading Information in Documents Containing Audited Financial Statements",
+      "authors": [
+        "Cynthia Firey Eakin",
+        "Timothy Louwers",
+        "Stephen Wheeler"
+      ],
+      "abstract": "We investigate empirically the incidence of auditor modification of audit reports for misleading information included in other documents containing audited financial statements. Professional standards (specifically, SAS No. 8) require modification of the auditor's report for annual report information considered to be materially inconsistent in content or in manner of disclosure with information contained in the financial statements. Exhaustive data base key word searches for phrases that would be associated with such report modifications did not reveal a single instance in which other information accompanying audited financial statements was considered materially misleading since the implementation of SAS No. 8 (1975). Despite this finding, numerous examples from recent research identify what appear to be potentially misleading disclosures in annual reports. Using examples from these studies, we surveyed CPAs and financial statement users and found that that four of the five issues presented were seen as misleading. More authoritative guidance and/or more awareness on the part of auditors may be in order.",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-2_5.pdf",
+      "volume": 1,
+      "issue": 2,
+      "period": "July-December 2009"
+    },
+    "scheme_type": "disclosure_fraud",
+    "signals": [
+      "professional skepticism",
+      "tone-at-the-top",
+      "internal control weakness",
+      "audit quality"
+    ],
+    "data_fields": [
+      "audit report modifications",
+      "annual report disclosures",
+      "materially inconsistent information",
+      "SAS No. 8 compliance",
+      "auditor awareness"
+    ],
+    "korean_applicability": "LOW",
+    "fss_violation_category": "disclosure_fraud"
+  },
+  {
+    "article": {
+      "index": 6,
+      "title": "Forensic Evidence-Gathering Procedures for Employee Stock Options",
+      "authors": [
+        "Zabihollah Rezaee"
+      ],
+      "abstract": "Employee stock options (ESOs), as an integral component of long-term compensation plans, are usually offered to directors, senior executives, and key personnel to provide incentives to improve sustainable performance. The timing of option grant dates could be managed in a manner to increase the potential value of ESOs which would have significant governance, legal, ethical, tax, and accounting consequences. Backdating practices of retroactively setting the grant date as the day when the underlying stock price was low have been scrutinized by regulators. This article examines auditors’ responsibilities regarding ESOs and backdating practices as more than 250 public companies have engaged in backdating practices. Independent auditors should be skeptical of the likelihood of backdating practices of their clients and pay particular attention to the disclosures of ESO plans and grants. Auditors should use appropriate forensic accounting techniques and procedures to ensure investors receive relevant, reliable, and transparent information on ESOs. The fraud triangle should be used by auditors to gather and assess evidence about their clients: (1) incentives or pressure to engage in option backdating; (2) opportunities for backdating practices; and (3) rationalization of their backdating practices of ESOs.",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-2_6.pdf",
+      "volume": 1,
+      "issue": 2,
+      "period": "July-December 2009"
+    },
+    "scheme_type": "earnings_manipulation",
+    "signals": [
+      "backdating",
+      "stock option compensation",
+      "fraud triangle",
+      "incentive",
+      "opportunity",
+      "rationalization",
+      "professional skepticism",
+      "forensic audit",
+      "disclosure_fraud"
+    ],
+    "data_fields": [
+      "grant date",
+      "stock price at grant",
+      "ESO fair value",
+      "disclosure timing",
+      "audit evidence"
+    ],
+    "korean_applicability": "HIGH",
+    "fss_violation_category": "disclosure_fraud"
+  },
+  {
+    "article": {
+      "index": 7,
+      "title": "Public Relations Associates: Investigating Cost Assignment Fraud",
+      "authors": [
+        "Jennifer Mueller",
+        "Brian Ballou",
+        "Paul Zikmund"
+      ],
+      "abstract": "This instructional case reveals employee misappropriation resulting from control environment failure. Though the company is fictional, the case is based on an actual fraud within a large corporation. Part I of the case describes the controller’s discovery of curious accounting within accounts payable. Students play the role of a fraud examiner who has received a frantic call from the controller. Part I requires students to use the initial information provided by the controller to determine how the investigation should proceed. Part II of the case allows the investigation to unfold similarly for all students, ending with \"solving\" the case. Part II requires students to write a letter to the Board of Directors containing specific recommendations on how control weaknesses (related to the fraud occurrence) may be mitigated.",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-2_7.pdf",
+      "volume": 1,
+      "issue": 2,
+      "period": "July-December 2009"
+    },
+    "scheme_type": "asset_inflation",
+    "signals": [
+      "asset misappropriation",
+      "control environment",
+      "internal control weakness",
+      "forensic audit",
+      "management override"
+    ],
+    "data_fields": [
+      "accounts payable",
+      "cost assignment",
+      "control weaknesses",
+      "fraud examination procedures"
+    ],
+    "korean_applicability": "UNKNOWN",
+    "fss_violation_category": null
+  },
+  {
+    "article": {
+      "index": 8,
+      "title": "HealthSouth Corp.: The First Test of Sarbanes-Oxley",
+      "authors": [
+        "R. Loring Carlson",
+        "John M. Coulter",
+        "Thomas J. Vogel"
+      ],
+      "abstract": "In 2003, federal authorities obtained thousands of documents pertaining to the accounting records of HealthSouth Corporation, headquartered in Birmingham, Alabama. The SEC alleged that the Company deliberately overstated its earnings by a total amount of over $2.5 billion. Over a dozen executives pled guilty to various charges in connection with these fraudulent misstatements, and the former CEO, Richard Scrushy, was indicted on eighty-five criminal counts, including three counts under the Sarbanes-Oxley Act. As a result, he became the first CEO of a major company to be charged with violating the Act. PricewaterhouseCoopers, LLP, was contracted to perform a special audit to identify the misstatements in HealthSouth’s publicly issued financial statements for the period 1999-2001, to quantify the impact of those misstatements, and to make recommendations associated with necessary improvements in internal controls in order to reduce the future likelihood of the occurrence of fraud. The report on the special audit provides details on a number of potentially significant deficiencies in HealthSouth’s controls over its financial reporting process. Case questions are designed to have students consider the implications of the Act on the conduct of the audit, as well as to examine the link between weaknesses in HealthSouth’s internal control over financial reporting and the resulting fraud. They are also given the opportunity to draft sample audit reports for different opinions.",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-2_8.pdf",
+      "volume": 1,
+      "issue": 2,
+      "period": "July-December 2009"
+    },
+    "scheme_type": "earnings_manipulation",
+    "signals": [
+      "internal control weakness",
+      "fraudulent financial reporting",
+      "management override",
+      "restatement risk",
+      "professional skepticism",
+      "forensic audit"
+    ],
+    "data_fields": [
+      "earnings overstatement",
+      "financial restatement",
+      "internal control deficiencies",
+      "audit procedures",
+      "management fraud"
+    ],
+    "korean_applicability": "LOW",
+    "fss_violation_category": "revenue_fabrication"
+  },
+  {
+    "article": {
+      "index": 9,
+      "title": "Behavioral Implications of Evaluating Determinants of Academic Fraud Risk Factors",
+      "authors": [
+        "Charles A. Malgwi",
+        "Carter Rakovski"
+      ],
+      "abstract": "In this study, we report how 740 business students rated the relative importance of 35 academic fraud risk factors (red flags) identified in a newly designed academic fraud triangle. We conceptually demonstrate the hierarchy of the relative importance of the academic fraud risk factors using the Analytic Hierarchy Process. A factor analysis was conducted using maximum likelihood estimation with a Varimax rotation solution. One-way ANOVA models resulted in F-tests for differences among the mean factor scores for different groups of students. Pressure was ranked as the most important red flag element, identified by 70 percent of students as the most important element. This was followed by Opportunity (20 percent), while Rationalization was only chosen by about 10 percent of students as the most influential of the three elements. The mean factor scores by gender and domestic and international status of students were not significantly different. However, significant differences existed among respondents by class standing. Specifically, financial, job and social pressures were ranked of differing importance by students across undergraduate and graduate levels.",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-2_9.pdf",
+      "volume": 1,
+      "issue": 2,
+      "period": "July-December 2009"
+    },
+    "scheme_type": null,
+    "signals": [
+      "fraud triangle",
+      "incentive"
+    ],
+    "data_fields": [
+      "academic fraud red flags",
+      "fraud triangle elements",
+      "pressure",
+      "opportunity",
+      "rationalization",
+      "student demographics",
+      "class standing"
+    ],
+    "korean_applicability": "MEDIUM",
+    "fss_violation_category": null
+  },
+  {
+    "article": {
+      "index": 10,
+      "title": "Computer-based Proactive Fraud Auditing Tools",
+      "authors": [
+        "Gary J. Cook",
+        "Lynn H. Clements"
+      ],
+      "abstract": "Deterrence and detection of fraud has been a concern for a long time, but the collapse of Enron created a new era of concern over the detection of fraud. Fraud auditors have been slow to acknowledge the importance of the numerous computerized fraud detection tools, some of which were developed specifically for fraud investigation, and many which are multi-purpose tools. We have become concerned about the lack of use of the best tools available for fraud auditing. In this paper, we present an extensive number of computerized tools available to fraud auditors, an analysis of the tools currently used by fraud auditors based upon an e-mail survey, and our recommendations for the best tools to use in each of the three phases of fraud auditing based upon our model presented herein.",
+      "keywords": [],
+      "pdf_url": "https://s3.amazonaws.com/web.nacva.com/JFIA/Issues/JFIA-2009-2_10.pdf",
+      "volume": 1,
+      "issue": 2,
+      "period": "July-December 2009"
+    },
+    "scheme_type": null,
+    "signals": [
+      "forensic audit",
+      "professional skepticism"
+    ],
+    "data_fields": [
+      "computerized fraud detection tools",
+      "fraud auditing phases",
+      "fraud investigation methodology"
+    ],
+    "korean_applicability": "MEDIUM",
+    "fss_violation_category": null
+  }
+]

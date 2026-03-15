@@ -1,15 +1,16 @@
 """
-enrich_catalog() — Haiku batch enrichment of JFIA articles.
+enrich_catalog() — Haiku enrichment of JFIA articles (sequential or batch).
 
 Usage:
     python -m jfia_forensic.enrichment data/raw/jfia_catalog.json \
-           data/curated/jfia_enriched.json [--limit N]
+           data/curated/jfia_enriched.json [--limit N] [--batch]
 """
 
 from __future__ import annotations
 
 import json
 import sys
+import time
 from pathlib import Path
 
 from .catalog import JFIACatalog
@@ -18,6 +19,7 @@ from .constants import (
     ENRICHMENT_SYSTEM_PROMPT,
     SCHEME_TYPES,
     FSS_VIOLATION_CATEGORIES,
+    SIGNAL_SEED_VOCABULARY,
 )
 from .models import EnrichedArticle, JFIAArticle
 
@@ -37,7 +39,10 @@ ENRICHMENT_TOOL = {
                     "(common in Korean markets). Use null if no scheme clearly fits."
                 ),
             },
-            "signals": {"type": "array", "items": {"type": "string"}},
+            "signals": {
+                "type": "array",
+                "items": {"type": "string", "enum": sorted(SIGNAL_SEED_VOCABULARY)},
+            },
             "data_fields": {"type": "array", "items": {"type": "string"}},
             "korean_applicability": {
                 "type": "string",
@@ -97,27 +102,95 @@ def _enrich_one(client, article: JFIAArticle) -> EnrichedArticle:
         return _build_fallback(article)
 
 
+def _build_batch_request(position: int, article: JFIAArticle) -> dict:
+    """Build a single batch request dict for the Anthropic Batch API."""
+    return {
+        "custom_id": str(position),
+        "params": {
+            "model": HAIKU_MODEL,
+            "max_tokens": 512,
+            "system": ENRICHMENT_SYSTEM_PROMPT,
+            "tools": [ENRICHMENT_TOOL],
+            "tool_choice": {"type": "tool", "name": "extract_article_metadata"},
+            "messages": [
+                {
+                    "role": "user",
+                    "content": f"Title: {article.title}\n\nAbstract: {article.abstract}",
+                }
+            ],
+        },
+    }
+
+
+def _parse_batch_result(result, article: JFIAArticle) -> EnrichedArticle:
+    """Parse a batch result object into an EnrichedArticle. Falls back on error."""
+    try:
+        if result.type != "succeeded":
+            return _build_fallback(article)
+        parsed = result.message.content[0].input
+        return EnrichedArticle(
+            article=article,
+            scheme_type=parsed.get("scheme_type"),
+            signals=parsed.get("signals") or [],
+            data_fields=parsed.get("data_fields") or [],
+            korean_applicability=parsed.get("korean_applicability") or "UNKNOWN",
+            fss_violation_category=parsed.get("fss_violation_category"),
+        )
+    except (AttributeError, KeyError, ValueError, IndexError):
+        return _build_fallback(article)
+
+
 def enrich_catalog(
     catalog: JFIACatalog,
     client,
     limit: int | None = None,
+    batch: bool = False,
+    poll_interval: int = 30,
 ) -> list[EnrichedArticle]:
     """
-    Enrich all (or up to limit) articles in catalog using Haiku.
-    Returns list of EnrichedArticle, same length as input articles.
+    Enrich articles in catalog using Haiku.
+
+    batch=False (default): sequential, one API call per article.
+    batch=True: submits all abstract-bearing articles as a single Batch API request.
+
+    limit applies to both modes — truncates the article list before processing.
+    Returns list of EnrichedArticle, same length as the (possibly limited) article list.
     """
     articles = catalog._articles
     if limit is not None:
         articles = articles[:limit]
 
-    results = []
-    for i, article in enumerate(articles, 1):
-        enriched = _enrich_one(client, article)
-        results.append(enriched)
-        if i % 50 == 0:
-            print(f"  Enriched {i}/{len(articles)}...", file=sys.stderr)
+    if not batch:
+        results = []
+        for i, article in enumerate(articles, 1):
+            enriched = _enrich_one(client, article)
+            results.append(enriched)
+            if i % 50 == 0:
+                print(f"  Enriched {i}/{len(articles)}...", file=sys.stderr)
+        return results
 
-    return results
+    # --- Batch path ---
+    with_abstract = [(i, a) for i, a in enumerate(articles) if a.abstract]
+    print(
+        f"Submitting {len(with_abstract)}/{len(articles)} articles to Batch API...",
+        file=sys.stderr,
+    )
+
+    requests = [_build_batch_request(i, a) for i, a in with_abstract]
+    batch_job = client.messages.batches.create(requests=requests)
+    print(f"Batch {batch_job.id} submitted. Polling every {poll_interval}s...", file=sys.stderr)
+
+    while batch_job.processing_status != "ended":
+        time.sleep(poll_interval)
+        batch_job = client.messages.batches.retrieve(batch_job.id)
+        print(f"  Status: {batch_job.processing_status}", file=sys.stderr)
+
+    result_map: dict[int, EnrichedArticle] = {}
+    for item in client.messages.batches.results(batch_job.id):
+        pos = int(item.custom_id)
+        result_map[pos] = _parse_batch_result(item.result, articles[pos])
+
+    return [result_map.get(i, _build_fallback(a)) for i, a in enumerate(articles)]
 
 
 def main() -> None:
@@ -130,6 +203,7 @@ def main() -> None:
     parser.add_argument("catalog_path", help="Path to jfia_catalog.json")
     parser.add_argument("output_path", help="Path to write jfia_enriched.json")
     parser.add_argument("--limit", type=int, default=None, help="Max articles to enrich")
+    parser.add_argument("--batch", action="store_true", help="Use Anthropic Batch API")
     args = parser.parse_args()
 
     print(f"Loading catalog from {args.catalog_path}...", file=sys.stderr)
@@ -137,8 +211,8 @@ def main() -> None:
     print(f"  {catalog.total_articles} articles loaded", file=sys.stderr)
 
     client = anthropic.Anthropic()
-    print(f"Enriching via {HAIKU_MODEL}...", file=sys.stderr)
-    enriched = enrich_catalog(catalog, client, limit=args.limit)
+    print(f"Enriching via {HAIKU_MODEL} ({'batch' if args.batch else 'sequential'})...", file=sys.stderr)
+    enriched = enrich_catalog(catalog, client, limit=args.limit, batch=args.batch)
 
     output_path = Path(args.output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)

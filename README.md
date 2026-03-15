@@ -6,6 +6,7 @@ Provides:
 - `Detectlet` / `DetectletRegistry` — structured YAML-based fraud detection module definitions
 - `JFIACatalog` — searchable index of 469 JFIA peer-reviewed forensic accounting papers
 - Haiku-powered enrichment pipeline for abstracting scheme/signal metadata from abstracts
+- Signal normalisation pass to remove out-of-vocabulary or forbidden labels post-enrichment
 
 ## Install
 

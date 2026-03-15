@@ -113,6 +113,17 @@ class JFIACatalog:
         ]
         return matching
 
+    def by_signal(self, signal: str) -> list[JFIAArticle]:
+        """
+        Return articles whose enriched signals list contains signal (exact match).
+        Requires enriched JSON; returns empty list if not loaded.
+        """
+        return [
+            e.article
+            for e in self._enriched.values()
+            if signal in (e.signals or [])
+        ]
+
     def by_keyword(self, keyword: str) -> list[JFIAArticle]:
         """Return articles whose keyword list contains keyword (case-insensitive)."""
         kw_lower = keyword.lower()
