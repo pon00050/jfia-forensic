@@ -41,11 +41,18 @@ Accruals: abnormal accruals, discretionary accruals, real earnings management,
 Transactions: channel stuffing, round-trip transactions, related-party transactions,
   insider trading, asset misappropriation, profit shifting, transfer price manipulation
 Audit/reporting: audit quality, internal control weakness, fraudulent financial reporting,
-  restatement risk, professional skepticism, whistleblowing, tone-at-the-top, backdating
+  restatement risk, professional skepticism, whistleblowing, tone-at-the-top, backdating,
+  going concern, management override, forensic audit
 Fraud theory: fraud triangle, opportunity, rationalization, incentive
+Other: insider network, ratio analysis
 
-Do NOT invent new signal strings. Do NOT use scheme_type or fss_violation_category
-values (e.g., earnings_manipulation, disclosure_fraud) as signals.
+Use spaces not underscores — write "earnings smoothing", not "earnings_smoothing".
+
+Do NOT use any of the following as signals — these are classification labels, not
+indicators: earnings_manipulation, revenue_fabrication, asset_inflation,
+liability_suppression, disclosure_fraud, insider_network, cb_bw_manipulation,
+timing_anomaly, cost_distortion, related_party, earnings manipulation,
+earnings management, disclosure fraud.
 
 ## korean_applicability Levels
 Rate how applicable the paper's methods, findings, or fraud patterns are to Korean
