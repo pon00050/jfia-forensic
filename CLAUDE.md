@@ -69,6 +69,17 @@ data/curated/
 data/raw/            — jfia_catalog.json (gitignored — source from career-development)
 ```
 
+## Known Gaps
+
+| Gap | Why | Status |
+|-----|-----|--------|
+| `SGI` in `detectlets/beneish_mscore.yaml` missing from `SIGNAL_SEED_VOCABULARY` | Signal vocabulary mismatch — stripped by `normalise_signals(strict=True)` | Unblocked — bug |
+| `DetectletMatch` in `models.py` defined/exported but no matching logic exists | Placeholder for future detectlet-to-case matching | Deferred |
+| No test for `JFIACatalog.by_keyword()` | Oversight — every other public method has tests | Unblocked |
+| `pandas>=2` runtime dep in `pyproject.toml` never imported | Likely leftover from early prototyping | Unblocked — remove |
+| `pytest-asyncio` in dev deps, no async tests | Unused dev dependency | Unblocked — remove |
+| No `by_fss_violation_category()` query on `DetectletRegistry` | `fss_violation_categories` field exists on model but no query method | Unblocked |
+
 ## Conventions
 
 - All models use `BaseModel`, Python 3.11+ union syntax (`float | None`)
