@@ -12,14 +12,12 @@ dependencies = [
     "pydantic>=2",
     "PyYAML>=6",
     "anthropic>=0.30",
-    "pandas>=2",
     "python-dotenv>=1",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=8",
-    "pytest-asyncio>=0.23",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -29,5 +27,4 @@ packages = ["src/jfia_forensic"]
 compile-bytecode = false
 
 [tool.pytest.ini_options]
-asyncio_mode = "auto"
 testpaths = ["tests"]

@@ -165,3 +165,33 @@ def test_catalog_search_no_match_returns_empty(catalog_file):
     catalog = JFIACatalog.load(catalog_file)
     results = catalog.search("xyzzy_nonexistent_term_12345")
     assert results == []
+
+
+def test_catalog_by_keyword_case_insensitive(catalog_file):
+    """by_keyword() matches case-insensitively."""
+    catalog = JFIACatalog.load(catalog_file)
+    results = catalog.by_keyword("m-score")
+    assert len(results) >= 1
+    assert any("M-SCORE" in a.keywords for a in results)
+
+
+def test_catalog_by_keyword_partial_match(catalog_file):
+    """by_keyword() matches partial keyword strings."""
+    catalog = JFIACatalog.load(catalog_file)
+    results = catalog.by_keyword("earnings")
+    assert len(results) >= 1
+
+
+def test_catalog_by_keyword_no_match(catalog_file):
+    """by_keyword() returns empty list for non-matching keyword."""
+    catalog = JFIACatalog.load(catalog_file)
+    results = catalog.by_keyword("xyzzy_nonexistent_keyword")
+    assert results == []
+
+
+def test_catalog_by_keyword_empty_keywords_skipped(catalog_file):
+    """Articles with empty keyword list are skipped by by_keyword()."""
+    catalog = JFIACatalog.load(catalog_file)
+    # Article 3 has keywords=[] — should not appear for any query
+    results = catalog.by_keyword("Disclosure")
+    assert all(a.index != 3 for a in results)

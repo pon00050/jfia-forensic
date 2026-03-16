@@ -137,3 +137,35 @@ def test_registry_rejects_invalid_scheme(tmp_path):
     _write_yaml(tmp_path, "bad_scheme.yaml", bad_scheme)
     with pytest.raises(ValueError):
         DetectletRegistry.from_yaml_dir(tmp_path)
+
+
+def test_registry_by_fss_violation_category(tmp_path):
+    """by_fss_violation_category() returns matching detectlets."""
+    _write_yaml(tmp_path, "a.yaml", VALID_YAML)
+    _write_yaml(tmp_path, "b.yaml", VALID_YAML_2)
+    registry = DetectletRegistry.from_yaml_dir(tmp_path)
+    results = registry.by_fss_violation_category("revenue_fabrication")
+    assert len(results) == 1
+    assert results[0].name == "Test Beneish"
+
+
+def test_registry_by_fss_violation_category_no_match(tmp_path):
+    """by_fss_violation_category() returns empty for non-matching category."""
+    _write_yaml(tmp_path, "a.yaml", VALID_YAML)
+    registry = DetectletRegistry.from_yaml_dir(tmp_path)
+    results = registry.by_fss_violation_category("asset_inflation")
+    assert results == []
+
+
+def test_registry_by_fss_violation_category_multiple_matches(tmp_path):
+    """by_fss_violation_category() returns all detectlets with that category."""
+    # Modify VALID_YAML_2 to also include revenue_fabrication
+    yaml_with_same_cat = VALID_YAML_2.replace(
+        '- "disclosure_fraud"',
+        '- "disclosure_fraud"\n  - "revenue_fabrication"'
+    )
+    _write_yaml(tmp_path, "a.yaml", VALID_YAML)
+    _write_yaml(tmp_path, "b.yaml", yaml_with_same_cat)
+    registry = DetectletRegistry.from_yaml_dir(tmp_path)
+    results = registry.by_fss_violation_category("revenue_fabrication")
+    assert len(results) == 2

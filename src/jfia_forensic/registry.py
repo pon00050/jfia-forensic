@@ -42,6 +42,13 @@ class DetectletRegistry:
             return list(self._detectlets)
         return [d for d in self._detectlets if d.scheme == scheme]
 
+    def by_fss_violation_category(self, category: str) -> list[Detectlet]:
+        """Return detectlets whose fss_violation_categories includes category."""
+        return [
+            d for d in self._detectlets
+            if category in d.fss_violation_categories
+        ]
+
     def all(self) -> list[Detectlet]:
         """Return all loaded detectlets."""
         return list(self._detectlets)
