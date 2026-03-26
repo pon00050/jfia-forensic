@@ -73,14 +73,13 @@ data/raw/            — jfia_catalog.json (gitignored — source from career-de
 
 | Gap | Why | Status |
 |-----|-----|--------|
-| `SGI` in `detectlets/beneish_mscore.yaml` missing from `SIGNAL_SEED_VOCABULARY` | Signal vocabulary mismatch — stripped by `normalise_signals(strict=True)` | Unblocked — bug |
 | `DetectletMatch` in `models.py` defined/exported but no matching logic exists | Placeholder for future detectlet-to-case matching | Deferred |
 
 ## Conventions
 
 - All models use `BaseModel`, Python 3.11+ union syntax (`float | None`)
 - `Detectlet.scheme` and `EnrichedArticle.korean_applicability` have `@field_validator` enforcing controlled vocabulary (`SCHEME_TYPES` and `KOREAN_APPLICABILITY_VALUES`); all other fields are unenforced
-- `HAIKU_MODEL = "claude-haiku-4-5"` — never use opus in this project; always use the short model ID (no date suffix)
+- `HAIKU_MODEL = "claude-haiku-4-5-20251001"` — never use opus in this project; use the full dated model ID
 - Enrichment is idempotent: re-running with same input produces same output
 - `catalog.search()` scores across title (3pts), keywords (2pts), abstract (1pt); no enriched-data dependency
 
