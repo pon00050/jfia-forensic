@@ -9,7 +9,7 @@ Part of the Korean forensic accounting toolkit.
 - Task board: https://github.com/users/pon00050/projects/1
 - Role: Analysis library
 - Depends on: jfia-catalog (reads jfia_catalog.json)
-- Consumed by: kr-forensic-finance (MCP tool #11, detectlet registry)
+- Consumed by: krff-shell (MCP tool #11, detectlet registry)
 
 ## Common Commands
 

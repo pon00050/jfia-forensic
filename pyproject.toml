@@ -15,6 +15,10 @@ dependencies = [
     "python-dotenv>=1",
 ]
 
+[project.urls]
+Repository = "https://github.com/pon00050/jfia-forensic"
+Issues = "https://github.com/pon00050/jfia-forensic/issues"
+
 [project.optional-dependencies]
 dev = [
     "pytest>=8",
