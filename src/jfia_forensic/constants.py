@@ -3,6 +3,8 @@ Shared constants for jfia-forensic.
 No magic strings in pipeline or analysis code — import from here.
 """
 
+import os
+
 SCHEME_TYPES = [
     "earnings_manipulation",
     "revenue_fabrication",
@@ -26,7 +28,7 @@ FSS_VIOLATION_CATEGORIES = [
 KOREAN_APPLICABILITY_VALUES = ["HIGH", "MEDIUM", "LOW", "UNKNOWN"]
 
 # Model routing — never use opus in this project
-HAIKU_MODEL = "claude-haiku-4-5-20251001"
+HAIKU_MODEL: str = os.getenv("ANTHROPIC_HAIKU_MODEL", "claude-haiku-4-5-20251001")
 
 ENRICHMENT_SYSTEM_PROMPT = """\
 You are a forensic accounting classifier. Call the extract_article_metadata tool \
