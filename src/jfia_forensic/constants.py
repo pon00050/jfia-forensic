@@ -99,7 +99,7 @@ Material weakness disclosures are associated with higher post-SOX restatement ra
 
 SIGNAL_SEED_VOCABULARY: frozenset[str] = frozenset({
     # Beneish M-Score components
-    "DSRI", "AQI", "GMI", "DSI", "SGAI", "DEPI", "LVGI", "TATA",
+    "DSRI", "AQI", "GMI", "SGI", "DSI", "SGAI", "DEPI", "LVGI", "TATA",
     # Forensic models
     "Beneish M-Score", "Benford's Law", "Altman Z-Score", "F-Score",
     "Jones Model", "Modified Jones Model", "Dechow-Dichev Model", "Zmijewski X-Score",
@@ -121,6 +121,8 @@ SIGNAL_SEED_VOCABULARY: frozenset[str] = frozenset({
     "board composition", "CEO duality", "audit committee composition",
     # Other
     "insider network", "ratio analysis", "stock option compensation",
+    # Underscore variants the model generates
+    "disclosure_fraud", "earnings_smoothing", "timing_anomaly",
 })
 
 
