@@ -156,7 +156,7 @@ def enrich_catalog(
     limit applies to both modes — truncates the article list before processing.
     Returns list of EnrichedArticle, same length as the (possibly limited) article list.
     """
-    articles = catalog._articles
+    articles = catalog.articles
     if limit is not None:
         articles = articles[:limit]
 

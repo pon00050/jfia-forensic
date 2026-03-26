@@ -68,6 +68,10 @@ class JFIACatalog:
         return cls(articles, enriched)
 
     @property
+    def articles(self) -> list[JFIAArticle]:
+        return self._articles
+
+    @property
     def total_articles(self) -> int:
         return len(self._articles)
 
