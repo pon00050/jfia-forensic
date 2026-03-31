@@ -1,6 +1,9 @@
 """
 Shared constants for jfia-forensic.
 No magic strings in pipeline or analysis code — import from here.
+
+SIGNAL_SEED_VOCABULARY is kept in sync with kr-enforcement-cases/constants.py manually.
+When adding or removing terms here, update that file too (and vice versa).
 """
 
 import os
