@@ -18,32 +18,32 @@ Part of the Korean forensic accounting toolkit.
 uv sync --extra dev
 
 # Run tests
-python -m pytest tests/ -v
+uv run pytest tests/ -v
 
 # Run a single test
-python -m pytest tests/test_models.py::test_name -v
+uv run pytest tests/test_models.py::test_name -v
 
 # Load registry (quick sanity check)
-python -c "
+uv run python -c "
 from jfia_forensic import DetectletRegistry
 r = DetectletRegistry.from_yaml_dir('data/curated/detectlets/')
 print([d.name for d in r.all()])
 "
 
 # Search catalog
-python -c "
+uv run python -c "
 from jfia_forensic import JFIACatalog
 c = JFIACatalog.load('data/raw/jfia_catalog.json')
 for a in c.search('Beneish', limit=3): print(a.title)
 "
 
 # Run enrichment pipeline — sequential (~$0.55) or batch (~$0.28, 50% discount)
-python -m jfia_forensic.enrichment data/raw/jfia_catalog.json \
+uv run python -m jfia_forensic.enrichment data/raw/jfia_catalog.json \
        data/curated/jfia_enriched.json [--limit N] [--batch]
 
 # Post-processing: remove forbidden/OOV signals (no API calls)
-python -m jfia_forensic.normalise data/curated/jfia_enriched.json
-python -m jfia_forensic.normalise data/curated/jfia_enriched.json --strict  # keep only seed vocab
+uv run python -m jfia_forensic.normalise data/curated/jfia_enriched.json
+uv run python -m jfia_forensic.normalise data/curated/jfia_enriched.json --strict  # keep only seed vocab
 ```
 
 ## Architecture
@@ -60,6 +60,8 @@ src/jfia_forensic/
     enrichment.py    — enrich_catalog(): Haiku enrichment → EnrichedArticle list → JSON
                        batch=False (sequential) or batch=True (Batch API, 50% discount)
     normalise.py     — normalise_signals(): remove OOV/forbidden signals post-enrichment; CLI
+    _paths.py        — canonical data directory paths (PROJECT_ROOT, CATALOG_PATH, ENRICHED_PATH,
+                       DETECTLETS_DIR, ARTICLES_DIR); all file I/O should use these constants
     downloader.py    — download(): fetch article PDFs to articles/ by signal, scheme, or search
 
 data/curated/

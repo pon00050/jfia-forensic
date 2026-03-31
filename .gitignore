@@ -10,4 +10,3 @@ dist/
 build/
 .env
 articles/
-.claude/

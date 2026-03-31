@@ -22,6 +22,7 @@ Issues = "https://github.com/pon00050/jfia-forensic/issues"
 [project.optional-dependencies]
 dev = [
     "pytest>=8",
+    "ruff",
 ]
 
 [tool.hatch.build.targets.wheel]
