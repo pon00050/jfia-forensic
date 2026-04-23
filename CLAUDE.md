@@ -88,3 +88,8 @@ data/raw/            — jfia_catalog.json (gitignored — source from career-de
 ## TDD Rules
 
 Write tests before implementations. Every new behaviour needs a test that fails first.
+
+
+---
+
+**Domain knowledge** (regulatory analysis, buyer research, competitive intelligence, legal compliance) belongs in the hub vault: `forensic-accounting-toolkit/knowledge/`. Engineering docs (API patterns, test strategies, run logs) stay here. After creating a new domain knowledge note, copy it to the hub with gold-standard frontmatter. See hub `CLAUDE.md` §Knowledge Vault for the frontmatter contract.

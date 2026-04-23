@@ -1,5 +1,7 @@
 # jfia-forensic
 
+**[Read the full write-up →](https://ronanwrites.vercel.app/manuals/jfia-detectlets-from-literature-to-code)**
+
 Forensic accounting detectlet schema and JFIA literature catalog tools.
 
 Provides:
@@ -11,7 +13,7 @@ Provides:
 ## Install
 
 ```bash
-pip install jfia-forensic
+uv add git+https://github.com/pon00050/jfia-forensic
 ```
 
 ## Quick start
